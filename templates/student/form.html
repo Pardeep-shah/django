@@ -5,6 +5,8 @@
 
 {% block content %}
 
+
+<!-- 
  <div class="container mt-5">
       <form
         class="col-6 mx-auto card p-3 shadow-lg"
@@ -22,6 +24,8 @@
         </div>
 
         {% endif %}
+
+        
 
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">First Name</label>
@@ -55,8 +59,94 @@
           
         </div>
 
+
         <button type="submit" class="btn btn-warning">Submit</button>
       </form>
-    </div>
+    </div> -->
+
+
+
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+     
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: auto;
+      margin-top: 100px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+     
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2 style="margin-top: 10px;">REGISTRATION FORM</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="reg_id">Registration ID:</label>
+      <input type="text" id="reg_id" name="registration_id" required placeholder="Enter your Registration id">
+
+      <label for="f_name">First Name:</label>
+      <input type="text" id="f_name" name="f_name" required placeholder="Enter Your First name">
+
+      <label for="l_name">Last Name:</label>  
+      <input type="text" id="l_name" name="l_name" required placeholder="Enter Your Last name">
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+</body>
+</html>
+
 
 {% endblock %}

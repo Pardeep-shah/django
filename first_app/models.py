@@ -8,4 +8,6 @@ class Student(models.Model):
     f_name = models.CharField(max_length=100)
     l_name = models.CharField(max_length=100)
     registration_id = models.CharField(max_length=100)
-    
+
+
+

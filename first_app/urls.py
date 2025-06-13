@@ -23,7 +23,9 @@ urlpatterns = [
 
     path('return_poloicy', return_policy_view, name='return_policy_page'),
     path('categories', categories_view, name='categories'),
-    path('student_form', student_form_view, name='Student form'),
+    path('student_form', student_form_submit, name='Student form'),
+
+    path('student_list', student_list_view, name = 'student list')
 
 
 
