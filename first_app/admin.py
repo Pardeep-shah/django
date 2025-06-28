@@ -6,4 +6,10 @@ from .models import *
 
 admin.site.register(Student)
 
+admin.site.register(Employee)
+
+admin.site.register(Category)
+admin.site.register(Category_Product)
+
+
 

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Employee Form{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Emp_id</th>
+            <th>emp_first_name</th>
+            <th>emp_last_name</th>
+            <th>emp_city</th>
+            <th>salary</th>
+            <th>cmp_name</th>
+            <th>Action</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for i in employee_variable %}
+        <tr> 
+            <td>{{i.Emp_id}}</td>
+            <td>{{i.emp_first_name}}</td>
+            <td>{{i.emp_last_name}}</td>
+            <td>{{i.emp_city}}</td>
+            <td>{{i.salary}}</td>
+            <td>{{i.cmp_name}}</td>
+            <td><a href="{% url 'edit_employee' i.id %}">Edit</a></td>
+            
+             <td>
+            <form method="POST" action="{% url 'delete_employee' i.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+            </form>
+            </td>
+
+        </tr>
+        {% endfor %}
+           </tbody>
+
+</table>
+
+
+{% endblock %}

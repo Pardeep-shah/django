@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Employee Edit Form{% endblock %}
+
+{% block content %}
+
+
+
+
+
+
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+     
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: auto;
+      margin-top: 100px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+     
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+    <h2 style="margin-top: 10px;">Employee Edit Form</h2>
+
+      <label for="Emp_id">Emp_id:</label>
+      <input type="text" id="Emp_id" name="Emp_id" required placeholder="Enter Emp id" value="{{employee.Emp_id}}">
+
+      <label for="f_name">emp_first_name:</label>
+      <input type="text" id="emp_first_name" name="emp_first_name" required placeholder="Enter emp First name" value="{{employee.emp_first_name}}">
+
+      <label for="l_name">emp_last_name:</label>  
+      <input type="text" id="emp_last_name" name="emp_last_name" required placeholder="Enter emp Last name" value="{{employee.emp_last_name}}">
+
+      <label for="emp_city">emp_city_name:</label>  
+      <input type="text" id="emp_city" name="emp_city" required placeholder="Enter emp city" value="{{employee.emp_city}}">
+
+
+      <label for="salary">salary:</label>  
+      <input type="text" id="salary" name="salary" required placeholder="Enter salary" value="{{employee.salary}}">
+
+
+      <label for="cmp_name">cmp_name:</label>  
+      <input type="text" id="cmp_name" name="cmp_name" required placeholder="Enter cmp name" value="{{employee.cmp_name}}">
+
+
+      <button type="submit">Update</button>
+
+    </form>
+  </div>
+
+</body>
+</html>
+
+
+{% endblock %}
