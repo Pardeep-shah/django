@@ -12,4 +12,11 @@ admin.site.register(Category)
 admin.site.register(Category_Product)
 
 
+admin.site.register(Cart)
+admin.site.register(CartItem)
+
+admin.site.register(Wishlist)
+
+admin.site.register(Checkout)
+admin.site.register(OrderItem)
 

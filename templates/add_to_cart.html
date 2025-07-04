@@ -1,11 +1,24 @@
-{% load static %}
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
-</head>
+</head>  {% endcomment %}
+
+
+{% comment %} {% extends "base.html" %} {% endcomment %}
+{% load static %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+
+
+
+
 <body>
 
 <div class="cart-container">
@@ -29,7 +42,7 @@
                     <td>{{ item.product.product_name }}</td>
                     <td>₹{{ item.product.selling_price }}</td>
                     <td>{{ item.quantity }}</td>
-                    <td>₹{{ item.subtotal }}</td>
+                    <td>₹{{ item.get_subtotal }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -37,7 +50,7 @@
 
         <div class="total-section">
             <h3>Grand Total: ₹{{ grand_total }}</h3>
-            <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+            <a href="" class="checkout-btn">Proceed to Checkout</a>
         </div>
 
     {% else %}
@@ -46,7 +59,8 @@
 </div>
 
 </body>
-</html>
+
+{% endblock%}
 
 
 <style>

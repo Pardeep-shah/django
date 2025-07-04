@@ -135,8 +135,110 @@ def category_product_view(request, category_id):
     })
 
 
-def add_to_cart_view(request):
-    cart_items = Cart.objects.filter(user=request.user)
-    grand_total = sum(item.subtotal for item in cart_items)
-    return render(request, 'add_to_cart.html', {'cart_items': cart_items, 'grand_total': grand_total})
+
+def get_user_cart(request):
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        # For guest cart — this is optional and simple for now
+        cart, created = Cart.objects.get_or_create(user=None)
+    return cart
+
+def add_to_cart(request, product_id):
+
+    product = get_object_or_404(Category_Product, id=product_id)
+    cart = get_user_cart(request)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    
+    return redirect('view_cart')  # You can redirect to 'category_product' if preferred
+
+
+def view_cart(request):
+    cart = get_user_cart(request)
+    items = CartItem.objects.filter(cart=cart)
+    total = cart.get_total()
+
+    return render(request, 'add_to_cart.html', {
+        'cart_items': items,
+        'grand_total': total,
+    })
+
+
+
+
+
+from django.contrib.auth.decorators import login_required
+from .models import Category_Product, Wishlist
+
+@login_required
+def add_to_wishlist(request, product_id):
+    product = get_object_or_404(Category_Product, id=product_id)
+    Wishlist.objects.get_or_create(user=request.user, product=product)
+    return redirect('wishlist')  # Redirect to wishlist page
+
+@login_required
+def remove_from_wishlist(request, product_id):
+    product = get_object_or_404(Category_Product, id=product_id)
+    Wishlist.objects.filter(user=request.user, product=product).delete()
+    return redirect('wishlist')
+
+@login_required
+def wishlist_view(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Cart, CartItem, Checkout, OrderItem
+
+@login_required
+def checkout_view(request):
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = cart.cartitem_set.all()
+    total = sum(item.get_subtotal() for item in cart_items)
+
+    if request.method == 'POST':
+        # Save checkout details
+        checkout = Checkout.objects.create(
+            user=request.user,
+            full_name=request.POST['full_name'],
+            email=request.POST['email'],
+            phone=request.POST['phone'],
+            address=request.POST['address'],
+            city=request.POST['city'],
+            state=request.POST['state'],
+            postal_code=request.POST['postal_code'],
+            country=request.POST.get('country', 'India'),
+            total_amount=total,
+            payment_method=request.POST['payment_method'],
+            payment_status='Pending',
+        )
+
+        # Create order items
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=checkout,
+                product=item.product,
+                quantity=item.quantity,
+                price_at_purchase=item.product.selling_price,
+            )
+
+        cart.delete()  # Clear cart after checkout
+        return redirect('order_success')
+
+    return render(request, 'checkout.html', {
+        'cart_items': cart_items,
+        'total': total
+    })
+
+
+@login_required
+def order_success(request):
+    return render(request, 'order_success.html')
 
