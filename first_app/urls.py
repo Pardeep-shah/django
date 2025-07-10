@@ -9,6 +9,9 @@ from .views import *
 
 
 urlpatterns = [
+   path('register/', register_view, name='register'),
+   path('login/', login_view, name='login'),
+   path('logout/', logout_view, name='logout'),
    path('pradeep', homePage_view, name= 'home_page'),
    path('contact_us', contact_us_view, name='contact_us_page'),
 
@@ -41,7 +44,7 @@ urlpatterns = [
 
     path('categories/<int:category_id>/products/', category_product_view, name='category_products'),
 
-     path('category/<int:category_id>/', category_product_view, name='category_product'),
+    path('category/<int:category_id>/', category_product_view, name='category_product'),
     path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path('cart/', view_cart, name='view_cart'),
 
@@ -53,11 +56,11 @@ urlpatterns = [
     path('remove-from-wishlist/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
 
 
-    # path('checkout/', checkout, name='checkout'),
-    # path('place_order/', place_order, name='place_order'),
 
     path('checkout/', checkout_view, name='checkout'),
-    path('my_orders/', order_success, name='order_success'),
+    path('place-order/', place_order, name='place_order'),
+
+
   
 
     

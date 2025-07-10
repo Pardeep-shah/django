@@ -1,13 +1,66 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Student
 from .models import *
-
+from django.contrib import messages
+from django.views.decorators.http import require_POST
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
 
-# def about_view(request):
-#     return render (request,'about.html')
+# REGISTER VIEW
+def register_view(request):
+    if request.method == 'POST':
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken")
+            return redirect('register')
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+        messages.success(request, "Registration successful. Please login.")
+        return redirect('login')
+
+    return render(request, 'register.html')
+
+
+# LOGIN VIEW
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('home')  # Change to your desired homepage
+        else:
+            messages.error(request, "Invalid username or password")
+            return redirect('login')
+
+    return render(request, 'login.html')
+
+
+# LOGOUT VIEW (optional)
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Logged out successfully.")
+    return redirect('login')
+
 
 
 def about_fxn(request):
@@ -189,5 +242,161 @@ def remove_from_wishlist(request, product_id):
 def wishlist_view(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
     return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+
+
+
+
+def checkout_view(request):
+    return render(request, 'checkout.html')
+# place order
+@login_required
+@require_POST
+# def place_order(request):
+#     messages.success(request, "Order placed successfully!")
+#     return redirect('order_success') 
+
+
+
+@login_required
+def place_order(request):
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = CartItem.objects.select_related('product').filter(cart=cart)
+
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect('view_cart')
+
+    if request.method == 'POST':
+        # Get form data
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        pincode = request.POST.get('pincode')
+        country = request.POST.get('country', 'India')
+        payment_method = request.POST.get('payment_method')
+
+        # Calculate total
+        total_amount = sum(item.product.selling_price * item.quantity for item in cart_items)
+
+        # Create order
+        order = Order.objects.create(
+            user=request.user,
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            address=address,
+            city=city,
+            pincode=pincode,
+            country=country,
+            payment_method=payment_method,
+            total_amount=total_amount,
+            status='Pending'
+        )
+
+        # Add items to order
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.selling_price
+            )
+
+        # Clear cart
+        cart_items.delete()
+
+        messages.success(request, "Order placed successfully!")
+        return redirect('order_success')
+
+    return redirect('checkout')
+
+# from django.shortcuts import render, redirect
+# from .models import Cart, CartItem, Order, OrderItem
+# from django.contrib.auth.decorators import login_required
+# from django.contrib import messages
+# from decimal import Decimal
+
+# @login_required
+# def place_order(request):
+#     if request.method == "POST":
+#         user = request.user
+#         full_name = request.POST.get("full_name")
+#         email = request.POST.get("email")
+#         phone = request.POST.get("phone")
+#         address = request.POST.get("address")
+#         city = request.POST.get("city")
+#         state = request.POST.get("state")
+#         pincode = request.POST.get("pincode")
+#         country = request.POST.get("country", "India")
+#         payment_method = request.POST.get("payment_method", "COD")
+
+#         cart = Cart.objects.filter(user=user).first()
+#         if not cart:
+#             messages.error(request, "Cart is empty.")
+#             return redirect("checkout")
+
+#         cart_items = CartItem.objects.filter(cart=cart)
+#         if not cart_items.exists():
+#             messages.error(request, "Cart is empty.")
+#             return redirect("checkout")
+
+#         total_amount = sum(item.get_subtotal() for item in cart_items)
+
+#         order = Order.objects.create(
+#             user=user,
+#             email=email,
+#             phone=phone,
+#             full_name=full_name,
+#             address=address,
+#             city=city,
+#             pincode=pincode,
+#             country=country,
+#             payment_method=payment_method,
+#             total_amount=total_amount
+#         )
+
+#         for item in cart_items:
+#             OrderItem.objects.create(
+#                 order=order,
+#                 product=item.product,
+#                 quantity=item.quantity,
+#                 price_at_purchase=item.product.selling_price
+#             )
+
+#         # Clear cart
+#         cart_items.delete()
+#         cart.delete()
+
+#         messages.success(request, "Order placed successfully!")
+#         return redirect("order_success")  # Create this URL/view
+#     else:
+#         return redirect("checkout")
+
+
+    
+# def product_detail(request, product_id):
+#     product = get_object_or_404(Category_Product, id=product_id)
+    
+#     # Calculate discount percentage if there's an original price
+#     if hasattr(product, 'get_discount_percentage'):
+#         discount = product.get_discount_percentage()
+#     else:
+#         discount = None
+    
+#     context = {
+#         'product': product,
+#         'discount': discount,
+#     }
+#     return render(request, 'products_detail_page.html', context)
+
+
+
+
+
+
+
+
 
 

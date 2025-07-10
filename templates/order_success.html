@@ -1,8 +1,5 @@
-<!-- templates/order_success.html -->
-{% extends "base.html" %}
-{% block content %}
-<h2>Thank You!</h2>
-<p>Your order has been placed successfully.</p>
-<a href="{% url 'my_orders' %}">View My Orders</a>
-
-{% endblock %}
+<h2>Order Successful!</h2>
+<p>Thank you for your order, {{ order.full_name }}.</p>
+<p>Order ID: {{ order.id }}</p>
+<p>Total: ₹{{ order.total_amount }}</p>
+<a href="{% url 'place_order' %}">View My Orders</a>

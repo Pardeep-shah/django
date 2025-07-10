@@ -60,6 +60,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    
     product = models.ForeignKey(Category_Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
@@ -69,6 +70,46 @@ class CartItem(models.Model):
     def get_subtotal(self):
         return self.quantity * self.product.selling_price
     
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    full_name = models.CharField(max_length=255)
+    address = models.TextField()
+    city = models.CharField(max_length=100)
+    # state = models.CharField(max_length=100)
+    pincode = models.CharField(max_length=10)
+    country = models.CharField(max_length=100, default='India')
+    payment_method = models.CharField(max_length=20, choices=[
+        ('COD', 'Cash on Delivery'),
+        ('Card', 'Credit/Debit Card'),
+        ('UPI', 'UPI')
+    ])
+    
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order {self.id} by {self.user.username}"
+    
+
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='items')  
+    product = models.ForeignKey(Category_Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField()
+    price_at_purchase = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.product_name} in Order #{self.order.id}"
+
+    def get_subtotal(self):
+        return self.quantity * self.price_at_purchase
+
+
 
 
 
@@ -86,65 +127,3 @@ class Wishlist(models.Model):
         return f"{self.user.username}'s Wishlist Item: {self.product.product_name}"
 
 
-
-class Checkout(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    full_name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    
-    address = models.TextField()
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=100, default='India')  # or use choices
-    
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50, choices=[('COD', 'Cash on Delivery'), ('Online', 'Online Payment')])
-    payment_status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Completed', 'Completed')], default='Pending')
-
-    order_status = models.CharField(
-        max_length=20,
-        choices=[('Placed', 'Placed'), ('Shipped', 'Shipped'), ('Delivered', 'Delivered'), ('Cancelled', 'Cancelled')],
-        default='Placed'
-    )
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Order #{self.id} by {self.user.username if self.user else 'Guest'}"
-
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Checkout, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Category_Product, on_delete=models.SET_NULL, null=True)
-    quantity = models.PositiveIntegerField()
-    price_at_purchase = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return f"{self.quantity} x {self.product.product_name} in Order #{self.order.id}"
-
-    def get_subtotal(self):
-        return self.quantity * self.price_at_purchase
-
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    name = models.CharField(max_length=255)
-    address = models.TextField()
-    city = models.CharField(max_length=100)
-    pincode = models.CharField(max_length=10)
-    payment_method = models.CharField(max_length=20, choices=[
-        ('COD', 'Cash on Delivery'),
-        ('Card', 'Credit/Debit Card'),
-        ('UPI', 'UPI')
-    ])
-    
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, default='Pending')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Order {self.id} by {self.user.username}"
