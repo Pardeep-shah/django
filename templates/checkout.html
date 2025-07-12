@@ -1,56 +1,55 @@
 <!-- templates/checkout.html -->
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Checkout{% endblock %}
-
+{% block title %}Checkout{% endblock%}
 {% block content %}
 <h2>Checkout</h2>
 
-{% comment %} <form method="post"> {% endcomment %}
- <form method="POST" action="{% url 'place_order' %}">
+  <form method="POST" action="{% url 'place_order' %}">
     {% csrf_token %}
     <label>Full Name:</label>
-    <input type="text" name="full_name" required><br>
+    <input type="text" name="full_name" required /><br />
 
     <label>Email:</label>
-    <input type="email" name="email" required><br>
+    <input type="email" name="email" required /><br />
 
     <label>Phone:</label>
-    <input type="text" name="phone" required><br>
+    <input type="text" name="phone" required /><br />
 
     <label>Address:</label>
-    <textarea name="address" required></textarea><br>
+    <textarea name="address" required></textarea><br />
 
     <label>City:</label>
-    <input type="text" name="city" required><br>
+    <input type="text" name="city" required /><br />
 
     <label>State:</label>
-    <input type="text" name="state" required><br>
+    <input type="text" name="state" required /><br />
 
     <label>Postal Code:</label>
-    <input type="text" name="pincode" required><br>
+    <input type="text" name="pincode" required /><br />
 
     <label>Country:</label>
-    <input type="text" name="country" value="India" required><br>
+    <input type="text" name="country" value="India" required /><br />
 
     <label>Payment Method:</label>
     <select name="payment_method">
-    <option value="COD">Cash on Delivery</option>
-    <option value="UPI">UPI</option>
-    <option value="Card">Credit/Debit Card</option>
-</select>
-
+      <option value="COD">Cash on Delivery</option>
+      <option value="UPI">UPI</option>
+      <option value="Card">Credit/Debit Card</option>
+    </select>
 
     <h3>Order Summary</h3>
     <ul>
-         {% for cart_items in cart_items %}
-            <li>{{ item.product.product_name }} - {{ item.quantity }} x ₹{{ item.product.selling_price }} = ₹{{ item.get_subtotal }}</li>
-        {% endfor %}
+      {% for item in cart_items %}
+      <li>
+        {{ item.product.product_name }} - {{ item.quantity }} x ₹{{
+        item.product.selling_price }} = ₹{{ item.get_subtotal }}
+      </li>
+      {% endfor %}
     </ul>
     <p><strong>Total:</strong> ₹{{ grand_total }}</p>
 
     <button type="submit">Place Order</button>
-     
+  </form>
+  {% endblock %}
 </form>
-{% endblock %}

@@ -1,22 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Contact Us</title>
-</head>
-<body>
-    <h1>Contact Us</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br><br>
+{% extends "base.html" %} {% block content %}
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
+<div class="container mt-5"></div>
 
-        <label for="message">Message:</label><br>
-        <textarea id="message" name="message"></textarea><br><br>
-
-        <input type="submit" value="Send">
-    </form>
-</body>
-</html>
+{% endblock %}

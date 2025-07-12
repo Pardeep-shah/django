@@ -79,7 +79,7 @@ class Order(models.Model):
     full_name = models.CharField(max_length=255)
     address = models.TextField()
     city = models.CharField(max_length=100)
-    # state = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
     pincode = models.CharField(max_length=10)
     country = models.CharField(max_length=100, default='India')
     payment_method = models.CharField(max_length=20, choices=[

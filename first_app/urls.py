@@ -12,10 +12,12 @@ urlpatterns = [
    path('register/', register_view, name='register'),
    path('login/', login_view, name='login'),
    path('logout/', logout_view, name='logout'),
-   path('pradeep', homePage_view, name= 'home_page'),
-   path('contact_us', contact_us_view, name='contact_us_page'),
 
-    path('about_us', about_fxn, name='about_us_page'),
+
+   path('Home', homePage_view, name= 'home_page'),
+   path('contact-us', contact_us_view, name='contact_us_page'),
+
+    path('about-us', about_us_view, name='about_us_page'),
 
     path('privacy_policy', privacy_policy_view, name='privacy_policy_page'),
 
@@ -55,10 +57,9 @@ urlpatterns = [
     path('add-to-wishlist/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
     path('remove-from-wishlist/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
 
-
-
     path('checkout/', checkout_view, name='checkout'),
     path('place-order/', place_order, name='place_order'),
+    path('my_orders',my_orders, name='my_orders')
 
 
   

@@ -1,4 +1,10 @@
-
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navbar</title>
   <style>
     body {
       margin: 0;
@@ -27,26 +33,61 @@
     .nav-links {
       display: flex;
       gap: 10px;
+      align-items: center;
     }
 
-  </style>
+    .dropdown {
+      position: relative;
+    }
 
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 160px;
+      right: 0;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 0.5rem 1rem;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
 
   <nav class="navbar">
     <div class="logo">
       <a href="#">MySite</a>
     </div>
     <div class="nav-links">
-      <a href="/home">Home</a>
+      <a href="/Home">Home</a>
       <a href="/about-us">About Us</a>
       <a href="/contact-us">Contact Us</a>
       <a href="/categories">Categories</a>
       <a href="/cart">Cart</a>
       <a href="/wishlist">Wishlist</a>
-      <a href="/login/">Login</a>
-      <a href="/logout/">Logout</a>
 
+      {% if user.is_authenticated %}
+        <div class="dropdown">
+          <a href="#">My Profile ▾</a>
+          <div class="dropdown-content">
+            <a href="/my_orders">My Orders</a>
+            <a href="/logout/">Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <a href="/login/">Login</a>
+      {% endif %}
     </div>
   </nav>
 
- 
+</body>
+</html>
