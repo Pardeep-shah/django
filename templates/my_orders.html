@@ -1,7 +1,76 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% load static %} {% block title %}My Orders{%
+endblock %} {% block content %}
+<div class="order-container">
+  <h2>My Orders</h2>
 
-<div class="container mt-5">
-  <h1>this is my order page</h1>
+  {% if orders %}
+  <table class="order-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Customer Name</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.created_at|date:"d M Y" }}</td>
+        <td>{{ order.full_name }}</td>
+        <td>{{ order.status }}</td>
+        <td>₹{{ order.total_amount }}</td>
+        <td>
+          <a href="" class="btn-view">View</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You have not placed any orders yet.</p>
+  {% endif %}
 </div>
+{% endblock %}
+
+<style>
+  .order-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .order-table th,
+  .order-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .btn-view {
+    background: #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .btn-view:hover {
+    background: #0056b3;
+  }
+</style>
 
 {% endblock %}

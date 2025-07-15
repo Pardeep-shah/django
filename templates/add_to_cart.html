@@ -11,7 +11,7 @@
       <table class="cart-table">
         <thead>
           <tr>
-            <th>Image</th>
+            {% comment %} <th>Image</th> {% endcomment %}
             <th>Product</th>
             <th>Price</th>
             <th>Quantity</th>
@@ -22,11 +22,11 @@
           {% for item in cart_items %}
           <tr>
             <td>
-              <img
+              {% comment %} <img
                 src="{{ item.product.product_image.url }}"
                 alt="{{ item.product.product_name }}"
               />
-            </td>
+            </td> {% endcomment %}
             <td>{{ item.product.product_name }}</td>
             <td>₹{{ item.product.selling_price }}</td>
             <td>{{ item.quantity }}</td>
@@ -48,63 +48,65 @@
   </body>
 
   {% endblock%}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+  }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-    }
+  .cart-container {
+    background: #fff;
+    padding: 30px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-    .cart-container {
-      background: #fff;
-      padding: 30px;
-      max-width: 900px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  .cart-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-    .cart-container h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-    .cart-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+  .cart-table th,
+  .cart-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
 
-    .cart-table th,
-    .cart-table td {
-      padding: 12px 15px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
-    }
+  .cart-table img {
+    width: 80px;
+    height: auto;
+    max-height: 100px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
 
-    .cart-table img {
-      width: 60px;
-      height: auto;
-      border-radius: 4px;
-    }
+  .total-section {
+    text-align: right;
+    margin-top: 20px;
+  }
 
-    .total-section {
-      text-align: right;
-      margin-top: 20px;
-    }
+  .checkout-btn {
+    background: #28a745;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: inline-block;
+  }
 
-    .checkout-btn {
-      background: #28a745;
-      color: white;
-      padding: 12px 25px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      display: inline-block;
-    }
+  .checkout-btn:hover {
+    background: #218838;
+  }
+</style>
 
-    .checkout-btn:hover {
-      background: #218838;
-    }
-  </style>
 </html>

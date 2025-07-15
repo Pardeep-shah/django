@@ -59,7 +59,18 @@ urlpatterns = [
 
     path('checkout/', checkout_view, name='checkout'),
     path('place-order/', place_order, name='place_order'),
-    path('my_orders',my_orders, name='my_orders')
+    # path('my_orders',my_orders, name='my_orders')
+
+    # from django.urls import path
+    # from . import views
+
+    
+    path('my_orders/', my_orders, name='my_orders'),
+    # path('order/<int:order_id>/', order_detail, name='order_detail'),  # for action button
+     path('profile/', profile_view, name='profile'),
+ 
+ ]
+
 
 
   
@@ -69,4 +80,3 @@ urlpatterns = [
  
 
 
-]

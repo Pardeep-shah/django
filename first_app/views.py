@@ -325,5 +325,24 @@ def place_order(request):
         return redirect('checkout')  # GET requests shouldn't place orders
 
 
+# def my_orders(request):
+#     return render(request, 'my_orders.html')
+
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Order
+
+@login_required
 def my_orders(request):
-    return render(request, 'my_orders.html')
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    print(orders)
+    return render(request, 'my_orders.html', {'orders': orders})
+
+
+
+@login_required
+def profile_view(request):
+    return render(request, 'my_profile.html', {'user': request.user})

@@ -75,7 +75,7 @@
       <a href="/cart">Cart</a>
       <a href="/wishlist">Wishlist</a>
 
-      {% if user.is_authenticated %}
+      <!-- {% if user.is_authenticated %}
         <div class="dropdown">
           <a href="#">My Profile ▾</a>
           <div class="dropdown-content">
@@ -85,7 +85,22 @@
         </div>
       {% else %}
         <a href="/login/">Login</a>
-      {% endif %}
+      {% endif %} -->
+
+
+      {% if user.is_authenticated %}
+  <div class="dropdown">
+    <a href="#">{{ user.username }} ▾</a>
+    <div class="dropdown-content">
+      <a href="/profile/">My Profile</a>
+      <a href="{% url 'my_orders' %}">My Orders</a>
+      <a href="/logout/">Logout</a>
+    </div>
+  </div>
+{% else %}
+  <a href="/login/">Login</a>
+{% endif %}
+
     </div>
   </nav>
 
