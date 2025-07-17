@@ -127,3 +127,36 @@ class Wishlist(models.Model):
         return f"{self.user.username}'s Wishlist Item: {self.product.product_name}"
 
 
+class Contact_us(models.Model):
+    QUERY_CHOICES = [
+        ('refund', 'Refund'),
+        ('return', 'Return'),
+        ('call_me', 'Call Me'),
+        ('delivery_related', 'Delivery Related'),
+    ]
+
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    mobile = models.CharField(max_length=15)
+    query = models.CharField(max_length=20, choices=QUERY_CHOICES)
+    message = models.TextField()
+
+    def __str__(self):
+        return f"{self.full_name} - {self.query}"
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=[
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ], null=True, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.user.username

@@ -67,7 +67,16 @@ urlpatterns = [
     
     path('my_orders/', my_orders, name='my_orders'),
     # path('order/<int:order_id>/', order_detail, name='order_detail'),  # for action button
-     path('profile/', profile_view, name='profile'),
+    path('profile/', profile_view, name='profile'),
+
+    path('contact-us/', contact_us_view, name='contact_us'),
+
+    path('edit-profile/', edit_profile, name='edit_profile'),
+
+
+
+
+
  
  ]
 

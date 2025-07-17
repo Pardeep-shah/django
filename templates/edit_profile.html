@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 50px auto; font-family: Arial">
+  <h2>Edit Profile</h2>
+
+  <form method="post" enctype="multipart/form-data" action="{% url 'edit_profile' %}" style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
+    {% csrf_token %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- First Name -->
+    <div style="margin-bottom: 15px;">
+      <label for="first_name"><strong>First Name:</strong></label><br>
+      <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- Last Name -->
+    <div style="margin-bottom: 15px;">
+      <label for="last_name"><strong>Last Name:</strong></label><br>
+      <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- Email -->
+    <div style="margin-bottom: 15px;">
+      <label for="email"><strong>Email:</strong></label><br>
+      <input type="email" name="email" id="email" value="{{ user.email }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- Gender -->
+    <div style="margin-bottom: 15px;">
+      <label for="gender"><strong>Gender:</strong></label><br>
+      <select name="gender" id="gender" style="width: 100%; padding: 8px;">
+        <option value="">Select Gender</option>
+        <option value="male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
+        <option value="female" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
+        <option value="other" {% if profile.gender == "other" %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+
+    <!-- City -->
+    <div style="margin-bottom: 15px;">
+      <label for="city"><strong>City:</strong></label><br>
+      <input type="text" name="city" id="city" value="{{ profile.city }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- State -->
+    <div style="margin-bottom: 15px;">
+      <label for="state"><strong>State:</strong></label><br>
+      <input type="text" name="state" id="state" value="{{ profile.state }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- Country -->
+    <div style="margin-bottom: 15px;">
+      <label for="country"><strong>Country:</strong></label><br>
+      <input type="text" name="country" id="country" value="{{ profile.country }}" style="width: 100%; padding: 8px;">
+    </div>
+
+    <!-- Profile Picture -->
+    <div style="margin-bottom: 15px;">
+      <label for="profile_pic"><strong>Profile Picture:</strong></label><br>
+      {% if profile.profile_pic %}
+        <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" width="100" style="margin-bottom: 10px;"><br>
+      {% endif %}
+      <input type="file" name="profile_pic" id="profile_pic">
+    </div>
+
+    <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
+      Update Profile
+    </button>
+  </form>
+</div>
+{% endblock %}  

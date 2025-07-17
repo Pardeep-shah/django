@@ -346,3 +346,66 @@ def my_orders(request):
 @login_required
 def profile_view(request):
     return render(request, 'my_profile.html', {'user': request.user})
+
+
+def contact_us_view(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        query_type = request.POST.get('query_type')
+        description = request.POST.get('description')
+
+        # Save to DB
+        Contact_us.objects.create(
+            full_name=full_name,
+            email=email,
+            mobile=mobile,
+            query=query_type,
+            message=description
+        )
+
+        messages.success(request, 'Your query has been submitted successfully!')
+        return redirect('contact_us')
+
+    return render(request, 'contact_us.html')
+
+
+
+
+from .models import UserProfile
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile, created = UserProfile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        gender = request.POST.get('gender')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        profile_pic = request.FILES.get('profile_pic')
+
+        # Update User model
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+
+        # Update UserProfile model
+        profile.gender = gender
+        profile.city = city
+        profile.state = state
+        profile.country = country
+        if profile_pic:
+            profile.profile_pic = profile_pic
+        profile.save()
+
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('edit_profile')
+
+    return render(request, 'edit_profile.html', {'user': user, 'profile': profile})

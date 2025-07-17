@@ -19,4 +19,5 @@ admin.site.register(Wishlist)
 
 admin.site.register(Order)
 admin.site.register(OrderItem)
+admin.site.register(Contact_us)
 
