@@ -19,6 +19,10 @@ urlpatterns = [
 
     path('about-us', about_us_view, name='about_us_page'),
 
+
+    path('shop', shop_now_view, name='shop_now_page'),
+
+
     path('privacy_policy', privacy_policy_view, name='privacy_policy_page'),
 
 

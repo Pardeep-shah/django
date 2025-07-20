@@ -99,6 +99,13 @@ def return_policy_view(request):
     return render(request,'return_policy.html')
 
 
+from django.shortcuts import render
+
+def shop_now_view(request):
+    return render(request, 'shop_now.html')
+
+
+
 
 def student_form_submit(request):
     if request.method == 'POST':

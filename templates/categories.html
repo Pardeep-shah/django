@@ -1,25 +1,50 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block title %}Categories{% endblock %}
-
-{% block content %}
-
+{% extends "base.html" %} {% load static %} {% block title %}Categories{%
+endblock %} {% block content %}
 <!-- Add margin-top to create space from navbar -->
-<div class="categories-container" style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 100px; justify-content: center;">
-{% for i in category_variable %}
- <!-- Fashion -->
-  <div style="max-width: 250px; border: 1px solid #ccc; margin: 0 0 0 50px; border-radius: 10px; padding: 15px; text-align: center;">
-    <img src="{{  i.Category_image.url}}" alt="Outfit" style="width: 100%; border-radius: 10px;">
-    <h4 style="margin-top: 10px;">{{i.Category_name}}</h4>
+<div
+  class="categories-container"
+  style="
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    justify-content: center;
+  "
+>
+  {% for i in category_variable %}
+  <!-- Fashion -->
+  <div
+    style="
+      max-width: 250px;
+      border: 1px solid #ccc;
+      margin: 0 0 0 50px;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+    "
+  >
+    <img
+      src="{{  i.Category_image.url}}"
+      alt="Outfit"
+      style="width: 100%; border-radius: 10px"
+    />
+    <h4 style="margin-top: 10px">{{i.Category_name}}</h4>
     <a href="{% url 'category_products' i.id %}">
-    <button style="padding: 8px 12px; background-color: #007bff; margin-top: 10px; color: white; border: none; border-radius: 5px;">Shop Now</button>
-  </a>
+      <button
+        style="
+          padding: 8px 12px;
+          background-color: #007bff;
+          margin-top: 10px;
+          color: white;
+          border: none;
+          border-radius: 5px;
+        "
+      >
+        Shop Now
+      </button>
+    </a>
   </div>
 
-{% endfor %}
-  
- 
-
+  {% endfor %}
 </div>
 {% endblock %}
