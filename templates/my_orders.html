@@ -1,76 +1,363 @@
-{% extends "base.html" %} {% load static %} {% block title %}My Orders{%
-endblock %} {% block content %}
-<div class="order-container">
-  <h2>My Orders</h2>
+{% extends "base.html" %} {% comment %} {% load static %} {% block title %}My
+Orders{%endblock %} {% endcomment %} {% block content %}
+<div class="orders-container">
+  <div class="orders-header">
+    <h1><i class="fas fa-clipboard-list"></i> My Orders</h1>
+    <p>View and manage all your orders in one place</p>
+  </div>
 
   {% if orders %}
-  <table class="order-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Customer Name</th>
-        <th>Status</th>
-        <th>Total</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orders %}
-      <tr>
-        <td>{{ order.created_at|date:"d M Y" }}</td>
-        <td>{{ order.full_name }}</td>
-        <td>{{ order.status }}</td>
-        <td>₹{{ order.total_amount }}</td>
-        <td>
-          <a href="" class="btn-view">View</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="orders-list">
+    {% for order in orders %}
+    <div
+      class="order-card {% if order.status == 'Delivered' %}delivered{% elif order.status == 'Cancelled' %}cancelled{% else %}processing{% endif %}"
+    >
+      <div class="order-header">
+        <div class="order-id">Order #{{ order.id }}</div>
+        <div class="order-status">{{ order.status }}</div>
+        <div class="order-date">{{ order.created_at|date:"d M Y" }}</div>
+      </div>
+
+      <div class="order-details">
+        <div class="customer-info">
+          <h3><i class="fas fa-user"></i> {{ order.full_name }}</h3>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> {{ order.shipping_address }}
+          </p>
+        </div>
+
+        <div class="order-summary">
+          <div class="summary-item">
+            <span>Items:</span>
+            <span>{{ order.items.count }}</span>
+          </div>
+          <div class="summary-item">
+            <span>Total:</span>
+            <span class="price">₹{{ order.total_amount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-actions">
+        <a href="#" class="btn btn-view"
+          ><i class="fas fa-eye"></i> View Details</a
+        >
+        {% if order.status != 'Cancelled' and order.status != 'Delivered' %}
+        <a href="#" class="btn btn-cancel"
+          ><i class="fas fa-times"></i> Cancel Order</a
+        >
+        {% endif %} {% if order.status == 'Delivered' %}
+        <a href="#" class="btn btn-review"
+          ><i class="fas fa-star"></i> Leave Review</a
+        >
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
   {% else %}
-  <p>You have not placed any orders yet.</p>
+  <div class="no-orders">
+    <div class="empty-state">
+      <img src="" alt="No orders" class="empty-image" />
+      <h2>No Orders Yet</h2>
+      <p>
+        You haven't placed any orders with us yet. Start shopping to see your
+        orders here!
+      </p>
+      <a href="{% url 'shop_now_page' %}" class="btn btn-shop">Shop Now</a>
+    </div>
+  </div>
   {% endif %}
 </div>
-{% endblock %}
-
+{% endblock %} {% block extra_css %}
 <style>
-  .order-container {
-    max-width: 900px;
-    margin: auto;
-    padding: 30px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Base Styles */
+  .orders-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
 
-  .order-container h2 {
+  .orders-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 2.5rem;
+    color: #333;
   }
 
-  .order-table {
-    width: 100%;
-    border-collapse: collapse;
+  .orders-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
   }
 
-  .order-table th,
-  .order-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
+  .orders-header p {
+    font-size: 1.1rem;
+    color: #666;
+  }
+
+  /* Order Card Styles */
+  .order-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #4caf50;
+  }
+
+  .order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .order-card.processing {
+    border-left-color: #ffc107;
+  }
+
+  .order-card.cancelled {
+    border-left-color: #f44336;
+  }
+
+  .order-card.delivered {
+    border-left-color: #4caf50;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: #f9f9f9;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .order-id {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .order-status {
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .processing .order-status {
+    background: #fff3e0;
+    color: #ff8f00;
+  }
+
+  .cancelled .order-status {
+    background: #ffebee;
+    color: #f44336;
+  }
+
+  .delivered .order-status {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .order-date {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .order-details {
+    display: flex;
+    padding: 1.5rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .customer-info {
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .customer-info h3 {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #333;
+  }
+
+  .customer-info p {
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .order-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 200px;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .summary-item span:first-child {
+    color: #666;
+  }
+
+  .summary-item span:last-child {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .price {
+    color: #4caf50 !important;
+    font-size: 1.1rem;
+  }
+
+  .order-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
   }
 
   .btn-view {
-    background: #007bff;
-    color: #fff;
-    padding: 6px 12px;
-    text-decoration: none;
-    border-radius: 4px;
+    background: #2196f3;
+    color: white;
   }
 
   .btn-view:hover {
-    background: #0056b3;
+    background: #0b7dda;
+  }
+
+  .btn-cancel {
+    background: #ffebee;
+    color: #f44336;
+    border: 1px solid #f44336;
+  }
+
+  .btn-cancel:hover {
+    background: #f44336;
+    color: white;
+  }
+
+  .btn-review {
+    background: #ffc107;
+    color: #333;
+  }
+
+  .btn-review:hover {
+    background: #ffa000;
+  }
+
+  .btn-shop {
+    background: #4caf50;
+    color: white;
+    padding: 0.8rem 1.8rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+  }
+
+  .btn-shop:hover {
+    background: #388e3c;
+  }
+
+  /* Empty State */
+  .no-orders {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .empty-state {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .empty-image {
+    max-width: 300px;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state h2 {
+    color: #333;
+    margin-bottom: 0.75rem;
+  }
+
+  .empty-state p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .orders-container {
+      padding: 1rem;
+    }
+
+    .orders-header h1 {
+      font-size: 2rem;
+    }
+
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .order-details {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .order-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .orders-header h1 {
+      font-size: 1.8rem;
+    }
+
+    .order-card {
+      border-radius: 8px;
+    }
   }
 </style>
-
+{% endblock %} {% block extra_js %}
+<!-- Font Awesome for icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
 {% endblock %}
