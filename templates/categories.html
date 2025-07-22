@@ -1,50 +1,172 @@
-{% extends "base.html" %} {% load static %} {% block title %}Categories{%
-endblock %} {% block content %}
-<!-- Add margin-top to create space from navbar -->
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<!-- Hero Section for Categories -->
 <div
-  class="categories-container"
+  class="categories-hero"
   style="
-    margin-top: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 100px;
-    justify-content: center;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    margin-bottom: 50px;
   "
 >
-  {% for i in category_variable %}
-  <!-- Fashion -->
+  <h1 style="font-size: 3rem; margin-bottom: 20px">Explore Our Collections</h1>
+  <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto">
+    Discover unique styles across our carefully curated categories. Each
+    collection tells its own story.
+  </p>
+</div>
+
+<!-- Animated Categories Grid -->
+<div
+  class="categories-grid"
+  style="
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 5%;
+    margin-bottom: 80px;
+  "
+>
+  {% for category in category_variable %}
   <div
+    class="category-card"
     style="
-      max-width: 250px;
-      border: 1px solid #ccc;
-      margin: 0 0 0 50px;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      height: 400px;
     "
   >
-    <img
-      src="{{  i.Category_image.url}}"
-      alt="Outfit"
-      style="width: 100%; border-radius: 10px"
-    />
-    <h4 style="margin-top: 10px">{{i.Category_name}}</h4>
-    <a href="{% url 'category_products' i.id %}">
-      <button
+    <!-- Category Image with Overlay -->
+    <div
+      style="
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0.7)
+        );
+      "
+    >
+      <img
+        src="{{ category.Category_image.url }}"
+        alt="{{ category.Category_name }}"
         style="
-          padding: 8px 12px;
-          background-color: #007bff;
-          margin-top: 10px;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        "
+      />
+
+      <!-- Category Content -->
+      <div
+        style="
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 30px;
           color: white;
-          border: none;
-          border-radius: 5px;
+          z-index: 2;
         "
       >
-        Shop Now
-      </button>
-    </a>
-  </div>
+        <h3
+          style="
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+          "
+        >
+          {{ category.Category_name }}
+        </h3>
 
+        <a
+          href="{% url 'category_products' category.id %}"
+          style="
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: white;
+            color: #333;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+          "
+          onmouseover="this.style.backgroundColor='transparent'; this.style.color='white'"
+          onmouseout="this.style.backgroundColor='white'; this.style.color='#333'"
+        >
+          Explore Collection
+        </a>
+      </div>
+    </div>
+  </div>
   {% endfor %}
 </div>
+
+<!-- Call to Action Section -->
+<div
+  style="
+    background-color: #f9f9f9;
+    padding: 60px 20px;
+    text-align: center;
+    margin-top: 30px;
+  "
+>
+  <h2 style="font-size: 2rem; margin-bottom: 20px">
+    Can't Find What You're Looking For?
+  </h2>
+  <p style="max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem">
+    Our collections are constantly evolving. Sign up to be the first to know
+    about new arrivals.
+  </p>
+  <button
+    style="
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='translateY(-3px)'"
+    onmouseout="this.style.transform='translateY(0)'"
+  >
+    Subscribe to Newsletter
+  </button>
+</div>
+
+<style>
+  /* Hover Effects */
+  .category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  .category-card:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .categories-hero h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+
 {% endblock %}
