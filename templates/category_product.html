@@ -1,31 +1,374 @@
-{% extends "base.html" %}
-{% comment %} templates/category_products.html  {% endcomment %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% comment %} {% block title
+%}Categories{% endblock %} {% endcomment %} {% block content %}
 
-{% block title %}Categories{% endblock %}
-
-{% block content %}
-
-<h1>{{ category.Category_name}}</h1>
-
-<div class="categories-electronics" style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 100px; justify-content: center;">
-{% for i in products_variable %}
- 
-  <div style="max-width: 250px; border: 1px solid #ccc; margin: 0 0 0 50px; border-radius: 10px; padding: 15px; text-align: center;">
-    <img src="{{ i.product_image.url}}" alt="Iphone" style="width: 100%; border-radius: 10px;">
-    <h4 style="margin-top: 10px;">{{i.product_name}}</h4>
-    <h4 style="margin-top: 10px">{{i.original_price}}</h4>
-    <h4 style="margin-top: 10px">{{i.selling_price}}</h4>
-    <a href="{% url 'add_to_cart' i.id %}" style="padding: 8px 12px; background-color: #007bff; margin-top: 10px; color: white; border: none; border-radius: 5px;">Add to Cart</a>
-    
-
-    <a href="{% url 'add_to_wishlist' i.id %}" style="padding: 8px 12px; background-color: #007bff; margin-top: 10px; color: white; border: none; border-radius: 5px;">Add to Wishlist</a>
-     
-
-  </div>
-
-  {% endfor%}
-
+<!-- Hero Section -->
+<div
+  class="category-hero"
+  style="
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 80px 0;
+    color: white;
+    text-align: center;
+  "
+>
+  <h1
+    style="
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    "
+  >
+    {{ category.Category_name }}
+  </h1>
+  <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto">
+    Discover our premium collection of {{ category.Category_name }}. Quality
+    products at unbeatable prices.
+  </p>
 </div>
+
+<!-- Filter and Sort Options -->
+<div
+  class="product-controls"
+  style="
+    background: #f8f9fa;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  "
+>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    "
+  >
+    <div style="margin: 10px">
+      <span style="font-weight: 600; margin-right: 10px">Filter:</span>
+      <select
+        style="padding: 8px 15px; border-radius: 5px; border: 1px solid #ddd"
+      >
+        <option>All Products</option>
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+        <option>Newest Arrivals</option>
+        <option>Top Rated</option>
+      </select>
+    </div>
+    <div style="margin: 10px">
+      <span style="font-weight: 600; margin-right: 10px">Sort By:</span>
+      <select
+        style="padding: 8px 15px; border-radius: 5px; border: 1px solid #ddd"
+      >
+        <option>Recommended</option>
+        <option>Popularity</option>
+        <option>Discount</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Products Grid -->
+<div
+  class="products-grid"
+  style="max-width: 1400px; margin: 50px auto; padding: 0 20px"
+>
+  <div
+    style="
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      justify-items: center;
+    "
+  >
+    {% for product in products_variable %}
+    <div
+      class="product-card"
+      style="
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      "
+    >
+      <!-- Badge for Discount/Sale -->
+      {% if product.discount_percentage > 0 %}
+      <div
+        style="
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background: #ff4757;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          z-index: 2;
+        "
+      >
+        {{ product.discount_percentage }}% OFF
+      </div>
+      {% endif %}
+
+      <!-- Product Image -->
+      <div style="height: 220px; overflow: hidden; position: relative">
+        <img
+          src="{{ product.product_image.url }}"
+          alt="{{ product.product_name }}"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+          "
+        />
+        <!-- Quick View Button -->
+        <div
+          style="
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          "
+        >
+          <a
+            href=""
+            style="
+              padding: 8px 20px;
+              background: rgba(255, 255, 255, 0.9);
+              color: #333;
+              border-radius: 20px;
+              font-weight: 600;
+              text-decoration: none;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            "
+          >
+            Quick View
+          </a>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div style="padding: 20px">
+        <h3
+          style="
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #333;
+            height: 40px;
+            overflow: hidden;
+          "
+        >
+          {{ product.product_name }}
+        </h3>
+
+        <!-- Price Section -->
+        <div style="margin-bottom: 15px">
+          {% if product.discount_percentage > 0 %}
+          <span style="font-size: 1.2rem; font-weight: 700; color: #ff4757">
+            ${{ product.selling_price }}
+          </span>
+          <span
+            style="
+              font-size: 0.9rem;
+              color: #999;
+              text-decoration: line-through;
+              margin-left: 5px;
+            "
+          >
+            ${{ product.original_price }}
+          </span>
+          {% else %}
+          <span style="font-size: 1.2rem; font-weight: 700; color: #333">
+            ${{ product.selling_price }}
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- Rating Stars -->
+        <div style="color: #ffc107; margin-bottom: 15px; font-size: 0.9rem">
+          ★★★★☆ <span style="color: #777; font-size: 0.8rem">(24)</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 10px">
+          <a
+            href="{% url 'add_to_cart' product.id %}"
+            style="
+              flex: 1;
+              padding: 10px;
+              background: #4caf50;
+              color: white;
+              text-align: center;
+              border-radius: 5px;
+              text-decoration: none;
+              transition: background 0.3s ease;
+            "
+          >
+            Add to Cart
+          </a>
+          <a
+            href="{% url 'add_to_wishlist' product.id %}"
+            style="
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: #f8f9fa;
+              border-radius: 5px;
+              transition: background 0.3s ease;
+            "
+          >
+            <span style="color: #ff4757; font-size: 1.2rem">♥</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Pagination -->
+<div style="display: flex; justify-content: center; margin: 50px 0">
+  <div style="display: flex; gap: 10px">
+    <a
+      href="#"
+      style="
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+      "
+      >&laquo;</a
+    >
+    <a
+      href="#"
+      style="
+        padding: 10px 15px;
+        background: #4caf50;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+      "
+      >1</a
+    >
+    <a
+      href="#"
+      style="
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+      "
+      >2</a
+    >
+    <a
+      href="#"
+      style="
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+      "
+      >3</a
+    >
+    <a
+      href="#"
+      style="
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+      "
+      >&raquo;</a
+    >
+  </div>
+</div>
+
+<!-- Newsletter Subscription -->
+<div
+  style="
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 60px 20px;
+    text-align: center;
+    margin-top: 50px;
+  "
+>
+  <h2 style="margin-bottom: 20px">
+    Stay Updated with Our Latest {{ category.Category_name }}
+  </h2>
+  <p style="max-width: 600px; margin: 0 auto 30px; color: #555">
+    Subscribe to our newsletter to receive updates on new arrivals, special
+    offers, and more.
+  </p>
+  <form style="max-width: 500px; margin: 0 auto; display: flex">
+    <input
+      type="email"
+      placeholder="Your email address"
+      style="
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+      "
+    />
+    <button
+      type="submit"
+      style="
+        padding: 12px 20px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+      "
+    >
+      Subscribe
+    </button>
+  </form>
+</div>
+
+<style>
+  /* Hover Effects */
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .product-card:hover div[style*="opacity: 0"] {
+    opacity: 1 !important;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .products-grid div[style*="grid-template-columns"] {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .category-hero h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
 
 {% endblock %}

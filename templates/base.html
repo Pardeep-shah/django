@@ -1,37 +1,255 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    {% include "partial/navbar.html" %} {% block content %} {% comment %} Page
+    Content {% endcomment %} {% endblock %}
 
-{% include "partial/navbar.html" %}
+    <!-- footer.html -->
+    <!-- Creative Footer -->
+    <footer
+      style="
+        background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+        color: white;
+        padding: 40px 0 20px;
+        font-family: 'Arial', sans-serif;
+      "
+    >
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px">
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+          "
+        >
+          <!-- Company Info -->
+          <div style="flex: 1; min-width: 250px; margin-bottom: 20px">
+            <h3 style="color: #f1c40f; margin-bottom: 15px; font-size: 1.5rem">
+              Your Company
+            </h3>
+            <p style="line-height: 1.6">
+              Innovative solutions for a digital world. We create experiences
+              that matter.
+            </p>
+            <div style="margin-top: 15px">
+              <a
+                href="#"
+                style="color: white; margin-right: 10px; font-size: 1.2rem"
+                ><i class="fas fa-envelope"></i
+              ></a>
+              <a
+                href="#"
+                style="color: white; margin-right: 10px; font-size: 1.2rem"
+                ><i class="fas fa-phone"></i
+              ></a>
+              <a
+                href="#"
+                style="color: white; margin-right: 10px; font-size: 1.2rem"
+                ><i class="fas fa-map-marker-alt"></i
+              ></a>
+            </div>
+          </div>
 
-{% block content %}
+          <!-- Quick Links -->
+          <div style="flex: 1; min-width: 250px; margin-bottom: 20px">
+            <h3 style="color: #f1c40f; margin-bottom: 15px; font-size: 1.5rem">
+              Quick Links
+            </h3>
+            <ul style="list-style: none; padding: 0; line-height: 2">
+              <li>
+                <a
+                  href="#"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; Services</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; Portfolio</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; Contact</a
+                >
+              </li>
+            </ul>
+          </div>
 
-{% comment %} Page Content {% endcomment %}
+          <!-- Newsletter -->
+          <div style="flex: 1; min-width: 250px; margin-bottom: 20px">
+            <h3 style="color: #f1c40f; margin-bottom: 15px; font-size: 1.5rem">
+              Newsletter
+            </h3>
+            <p>Subscribe to our newsletter for the latest updates.</p>
+            <form style="margin-top: 15px; display: flex">
+              <input
+                type="email"
+                placeholder="Your Email"
+                style="
+                  padding: 10px;
+                  border: none;
+                  border-radius: 4px 0 0 4px;
+                  flex: 1;
+                "
+              />
+              <button
+                type="submit"
+                style="
+                  background-color: #f1c40f;
+                  color: #2c3e50;
+                  border: none;
+                  padding: 0 15px;
+                  border-radius: 0 4px 4px 0;
+                  cursor: pointer;
+                  font-weight: bold;
+                "
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
 
-{% endblock %}
+        <!-- Social Media -->
+        <div style="text-align: center; margin-bottom: 20px">
+          <a
+            href="#"
+            style="
+              color: white;
+              background: rgba(255, 255, 255, 0.2);
+              width: 40px;
+              height: 40px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              margin: 0 5px;
+              text-decoration: none;
+              transition: 0.3s;
+            "
+            ><i class="fab fa-facebook-f"></i
+          ></a>
+          <a
+            href="#"
+            style="
+              color: white;
+              background: rgba(255, 255, 255, 0.2);
+              width: 40px;
+              height: 40px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              margin: 0 5px;
+              text-decoration: none;
+              transition: 0.3s;
+            "
+            ><i class="fab fa-twitter"></i
+          ></a>
+          <a
+            href="#"
+            style="
+              color: white;
+              background: rgba(255, 255, 255, 0.2);
+              width: 40px;
+              height: 40px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              margin: 0 5px;
+              text-decoration: none;
+              transition: 0.3s;
+            "
+            ><i class="fab fa-instagram"></i
+          ></a>
+          <a
+            href="#"
+            style="
+              color: white;
+              background: rgba(255, 255, 255, 0.2);
+              width: 40px;
+              height: 40px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              margin: 0 5px;
+              text-decoration: none;
+              transition: 0.3s;
+            "
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          <a
+            href="#"
+            style="
+              color: white;
+              background: rgba(255, 255, 255, 0.2);
+              width: 40px;
+              height: 40px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              margin: 0 5px;
+              text-decoration: none;
+              transition: 0.3s;
+            "
+            ><i class="fab fa-youtube"></i
+          ></a>
+        </div>
 
-<!-- footer.html -->
-<footer style="background-color: #f1f1f1; padding: 20px; text-align: center;">
-    <div>
-        <p>&copy; 2025 Your Company Name. All rights reserved.</p>
-    </div>
-    <div>
-        <a href="">About Us</a> |
-        <a href="">Contact</a> |
-        <a href="">Privacy Policy</a>
-    </div>
-    <div style="margin-top: 10px;">
-        <a href="" target="_blank">Facebook</a> |
-        <a href="" target="_blank">Twitter</a> |
-        <a href="" target="_blank">Instagram</a>
-    </div>
-</footer>
+        <!-- Copyright -->
+        <div
+          style="
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+          "
+        >
+          <p>
+            &copy; 2025 Your Company Name. All Rights Reserved. |
+            <a href="#" style="color: #f1c40f; text-decoration: none"
+              >Privacy Policy</a
+            >
+            |
+            <a href="#" style="color: #f1c40f; text-decoration: none"
+              >Terms of Service</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
 
-
-</body>
+    <!-- Font Awesome for icons (add this in your head section) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </body>
 </html>
