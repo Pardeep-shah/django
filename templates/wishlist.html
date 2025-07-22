@@ -1,54 +1,224 @@
-{% extends "base.html" %} {% load static %} {% comment %} {% block title %}My
-Wishlist{%endblock %} {% endcomment %} {% block content %}
-<div style="max-width: 1000px; margin: 0 auto; padding: 40px 20px">
-  <h2 style="text-align: center; margin-bottom: 30px">My Wishlist</h2>
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="wishlist-container">
+  <div class="wishlist-header">
+    <h1>My Wishlist</h1>
+    <p>Your favorite items all in one place</p>
+    {% if not wishlist_items %}
+    <div class="empty-wishlist">
+      <img
+        src="{% static 'images/empty-wishlist.png' %}"
+        alt="Empty Wishlist"
+        width="200"
+      />
+      <p>Your wishlist is looking a little empty...</p>
+      <a href="{% url 'shop_now_page' %}" class="shop-now-btn"
+        >Start Shopping</a
+      >
+    </div>
+    {% endif %}
+  </div>
 
   {% if wishlist_items %}
-  <table style="width: 100%; border-collapse: collapse; text-align: center">
-    <thead>
-      <tr style="background-color: #f4f4f4">
-        <th style="padding: 10px; border: 1px solid #ddd">Image</th>
-        <th style="padding: 10px; border: 1px solid #ddd">Product Name</th>
-        <th style="padding: 10px; border: 1px solid #ddd">Price</th>
-        <th style="padding: 10px; border: 1px solid #ddd">Remove</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in wishlist_items %}
-      <tr>
-        <td style="padding: 10px; border: 1px solid #ddd">
-          <img
-            src="{{ item.product.product_image.url }}"
-            alt="{{ item.product.product_name }}"
-            width="100"
-          />
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd">
-          {{ item.product.product_name }}
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd">
-          ₹{{ item.product.selling_price }}
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd">
+  <div class="wishlist-grid">
+    {% for item in wishlist_items %}
+    <div class="wishlist-card">
+      <div class="wishlist-card-img">
+        <img
+          src="{{ item.product.product_image.url }}"
+          alt="{{ item.product.product_name }}"
+        />
+        <div class="wishlist-actions">
           <a
             href="{% url 'remove_from_wishlist' item.product.id %}"
-            style="
-              padding: 8px 12px;
-              background-color: red;
-              color: white;
-              text-decoration: none;
-              border-radius: 4px;
-            "
+            class="remove-btn"
           >
-            Remove
+            <i class="fas fa-trash"></i>
           </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <p style="text-align: center">Your wishlist is empty.</p>
+          <a
+            href="{% url 'add_to_cart' item.product.id %}"
+            class="add-to-cart-btn"
+          >
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </a>
+        </div>
+      </div>
+      <div class="wishlist-card-info">
+        <h3>{{ item.product.product_name }}</h3>
+        <div class="price">₹{{ item.product.selling_price }}</div>
+        {% if item.product.original_price %}
+        <div class="original-price">₹{{ item.product.original_price }}</div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
   {% endif %}
 </div>
+
+<style>
+  .wishlist-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .wishlist-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .wishlist-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .wishlist-header p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .empty-wishlist {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  .empty-wishlist p {
+    font-size: 1.2rem;
+    color: #555;
+    margin: 20px 0;
+  }
+
+  .shop-now-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #ff6b6b;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .shop-now-btn:hover {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+  }
+
+  .wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .wishlist-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .wishlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .wishlist-card-img {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .wishlist-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .wishlist-card:hover .wishlist-card-img img {
+    transform: scale(1.05);
+  }
+
+  .wishlist-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  }
+
+  .wishlist-card:hover .wishlist-actions {
+    opacity: 1;
+  }
+
+  .remove-btn,
+  .add-to-cart-btn {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .remove-btn {
+    font-size: 1.2rem;
+    padding: 8px;
+  }
+
+  .remove-btn:hover {
+    color: #ff6b6b;
+    transform: scale(1.2);
+  }
+
+  .add-to-cart-btn {
+    background-color: #4caf50;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+
+  .add-to-cart-btn:hover {
+    background-color: #3e8e41;
+  }
+
+  .wishlist-card-info {
+    padding: 15px;
+  }
+
+  .wishlist-card-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #ff6b6b;
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .wishlist-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+  }
+</style>
+
 {% endblock %}

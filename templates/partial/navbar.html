@@ -70,6 +70,9 @@
       border-radius: 4px;
       transition: var(--transition);
       position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
     .navbar a:hover {
@@ -130,10 +133,12 @@
     }
 
     .dropdown-content a {
-      display: block;
+      display: flex;
+      align-items: center;
       padding: 0.6rem 0.8rem; /* Decreased padding */
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       font-size: 0.75rem; /* Decreased font size */
+      gap: 0.5rem;
     }
 
     .dropdown-content a:last-child {
@@ -225,34 +230,34 @@
 
   <nav class="navbar">
     <div class="logo">
-      <a href="/Home">E-Commerce</a>
+      <a href="/Home"><i class="fas fa-store"></i> E-Commerce</a>
     </div>
     
     <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
     
     <div class="nav-links" id="navLinks">
-      <a href="/Home">Home</a>
-      <a href="/about-us">About Us</a>
-      <a href="/contact-us">Contact Us</a>
-      <a href="/categories">Categories</a>
+      <a href="/Home"><i class="fas fa-home"></i> Home</a>
+      <a href="/about-us"><i class="fas fa-info-circle"></i> About Us</a>
+      <a href="/contact-us"><i class="fas fa-envelope"></i> Contact Us</a>
+      <a href="/categories"><i class="fas fa-list"></i> Categories</a>
       
       <div class="nav-icon">
         <a href="/cart">
-          Cart
+          <i class="fas fa-shopping-cart"></i> Cart
           <span class="cart-count">3</span> <!-- Dynamic count would go here -->
         </a>
       </div>
       
       <div class="nav-icon">
         <a href="/wishlist">
-          Wishlist
+          <i class="fas fa-heart"></i> Wishlist
           <span class="wishlist-count">2</span> <!-- Dynamic count would go here -->
         </a>
       </div>
 
       {% if user.is_authenticated %}
         <div class="dropdown" id="profileDropdown">
-          <a href="#">{{ user.username }} ▾</a>
+          <a href="#"><i class="fas fa-user-circle"></i> {{ user.username }} ▾</a>
           <div class="dropdown-content">
             <a href="/profile/"><i class="fas fa-user"></i> My Profile</a>
             <a href="{% url 'my_orders' %}"><i class="fas fa-box"></i> My Orders</a>
@@ -302,8 +307,10 @@
     });
   </script>
 
-  <!-- Font Awesome for icons (you can include this in your base template) -->
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </body>
 </html>
+
+

@@ -1,217 +1,493 @@
 {% extends "base.html" %} {% block content %}
-<div class="container my-5">
-  <div class="contact-section">
-    <h1 class="text-center mb-5">Get in Touch</h1>
+<div class="contact-page">
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="container">
+      <h1>Let's Connect</h1>
+      <p>
+        We'd love to hear from you! Reach out for inquiries, support, or just to
+        say hello.
+      </p>
+    </div>
+  </section>
 
-    <div class="row">
-      <!-- Contact Form Column -->
-      <div class="col-lg-6">
-        <div class="contact-form card p-4 shadow">
-          <h2 class="mb-4 text-center">Send us a message</h2>
-          <form method="post" action="{% url 'contact_us' %}">
+  <!-- Contact Content -->
+  <div class="container contact-container">
+    <div class="contact-grid">
+      <!-- Map Column (now on left) -->
+      <div class="map-column">
+        <div class="map-wrapper">
+          <h3><i class="fas fa-map-marker-alt"></i> Find Us</h3>
+          <div class="map-responsive">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.869919207618!2d77.2099043150816!3d28.56908298244145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2a20e2e1a1f%3A0x5a1e6e1b6b5b9b1f!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="contact-info-box">
+            <div class="info-item">
+              <i class="fas fa-building"></i>
+              <div>
+                <h4>Our Office</h4>
+                <p>123 Business Street, City Center, New Delhi - 110001</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <h4>Working Hours</h4>
+                <p>Monday - Saturday: 9:00 AM - 6:00 PM</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-phone-alt"></i>
+              <div>
+                <h4>Call Us</h4>
+                <p>+91 98765 43210</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Column (now on right) -->
+      <div class="form-column">
+        <div class="form-wrapper">
+          <h2>Send Us a Message</h2>
+          <p>
+            Have questions or need assistance? Fill out the form below and we'll
+            get back to you soon.
+          </p>
+
+          <form
+            method="post"
+            action="{% url 'contact_us' %}"
+            class="contact-form"
+          >
             {% if messages %} {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %} {% endif %} {% csrf_token %}
 
-            <div class="form-group mb-3">
-              <label for="full_name" class="form-label">Full Name</label>
-              <input
-                type="text"
-                name="full_name"
-                class="form-control"
-                id="full_name"
-                required
-                placeholder="Enter your full name"
-              />
+            <div class="form-group">
+              <label for="full_name">Your Name</label>
+              <div class="input-with-icon">
+                <i class="fas fa-user"></i>
+                <input
+                  type="text"
+                  name="full_name"
+                  id="full_name"
+                  required
+                  placeholder="Enter your full name"
+                />
+              </div>
             </div>
 
-            <div class="form-group mb-3">
-              <label for="mobile" class="form-label">Mobile No.</label>
-              <input
-                type="number"
-                name="mobile"
-                class="form-control"
-                id="mobile"
-                pattern="[0-9]{10}"
-                required
-                placeholder="Enter 10-digit mobile number"
-              />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="mobile">Phone Number</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-mobile-alt"></i>
+                  <input
+                    type="tel"
+                    name="mobile"
+                    id="mobile"
+                    pattern="[0-9]{10}"
+                    required
+                    placeholder="Enter 10-digit number"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-envelope"></i>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div class="form-group mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input
-                type="email"
-                name="email"
-                class="form-control"
-                id="email"
-                required
-                placeholder="Enter your email"
-              />
+            <div class="form-group">
+              <label for="query_type">How Can We Help?</label>
+              <div class="select-with-icon">
+                <i class="fas fa-question-circle"></i>
+                <select name="query_type" id="query_type" required>
+                  <option value="">Select a query type</option>
+                  <option value="refund">Refund</option>
+                  <option value="return">Return</option>
+                  <option value="call_me">Request a Callback</option>
+                  <option value="delivery">Delivery Inquiry</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
 
-            <div class="form-group mb-3">
-              <label for="query_type" class="form-label">Query Type</label>
-              <select
-                class="form-select"
-                name="query_type"
-                id="query_type"
-                required
-              >
-                <option value="">-- Select Query --</option>
-                <option value="refund">Refund</option>
-                <option value="return">Return</option>
-                <option value="call_me">Call Me</option>
-                <option value="delivery">Delivery Related</option>
-              </select>
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="description" class="form-label">Description</label>
+            <div class="form-group">
+              <label for="description">Your Message</label>
               <textarea
                 name="description"
-                class="form-control"
                 id="description"
-                rows="4"
+                rows="5"
                 required
-                placeholder="Describe your query in detail..."
+                placeholder="Tell us about your inquiry..."
               ></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block py-2">
-              Submit Query
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i> Send Message
             </button>
           </form>
         </div>
       </div>
-
-      <!-- Map Column (now on the right side) -->
-      <div class="col-lg-6">
-        <div class="map-container mb-4 h-100">
-          <div class="card p-4 h-100 shadow">
-            <h3 class="mb-3">Our Location</h3>
-            <div class="map-responsive">
-              <!-- Replace the iframe src with your actual Google Maps embed code -->
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.869919207618!2d77.2099043150816!3d28.56908298244145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2a20e2e1a1f%3A0x5a1e6e1b6b5b9b1f!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style="border: 0"
-                allowfullscreen=""
-                loading="lazy"
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Company Details and Social Media moved below both columns -->
-    <div class="row mt-4">
-      <div class="col-12">
-        <div class="contact-info card p-4 shadow">
-          <div class="row">
-            <!-- Company Details Section -->
-            <div class="col-md-8">
-              <h3 class="mb-3">Company Details</h3>
-              <div class="detail-item mb-2">
-                <i class="fas fa-map-marker-alt me-2"></i>
-                <span
-                  >123 Business Street, City Center, New Delhi - 110001</span
-                >
-              </div>
-              <div class="detail-item mb-2">
-                <i class="fas fa-phone me-2"></i>
-                <span>Mob. No.: +91 98765 43210</span>
-              </div>
-              <div class="detail-item mb-2">
-                <i class="fas fa-envelope me-2"></i>
-                <span>Email: contact@yourcompany.com</span>
-              </div>
-              <div class="detail-item mb-2">
-                <i class="fas fa-clock me-2"></i>
-                <span>Working Hours: Mon-Sat, 9:00 AM - 6:00 PM</span>
-              </div>
-            </div>
-
-            <!-- Social Media Links -->
-            <div class="col-md-4">
-              <h5 class="mb-3">Connect With Us</h5>
-              <div class="d-flex">
-                <a href="#" class="btn btn-outline-primary me-2"
-                  ><i class="fab fa-facebook-f"></i
-                ></a>
-                <a href="#" class="btn btn-outline-info me-2"
-                  ><i class="fab fa-twitter"></i
-                ></a>
-                <a href="#" class="btn btn-outline-danger me-2"
-                  ><i class="fab fa-instagram"></i
-                ></a>
-                <a href="#" class="btn btn-outline-primary"
-                  ><i class="fab fa-linkedin-in"></i
-                ></a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Social Media Section -->
+    <div class="social-section">
+      <h3>Connect With Us</h3>
+      <div class="social-links">
+        <a href="#" class="social-link facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="social-link twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="social-link instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" class="social-link youtube">
+          <i class="fab fa-youtube"></i>
+        </a>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-  .contact-section {
-    padding: 20px 0;
+  /* Base Styles */
+  .contact-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
   }
 
-  .contact-form,
-  .contact-info {
-    border-radius: 10px;
-    border: none;
+  /* Hero Section */
+  .contact-hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    margin-bottom: 50px;
   }
 
-  .map-responsive {
-    overflow: hidden;
-    padding-bottom: 56.25%;
+  .contact-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .contact-hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Contact Grid Layout */
+  .contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Map Column */
+  .map-column {
     position: relative;
-    height: 0;
-    border-radius: 8px;
   }
 
-  .map-responsive iframe {
-    left: 0;
-    top: 0;
+  .map-wrapper {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     height: 100%;
-    width: 100%;
-    position: absolute;
   }
 
-  .detail-item {
+  .map-wrapper h3 {
+    padding: 20px;
+    margin: 0;
+    background: #f8f9fa;
+    color: #2c3e50;
     display: flex;
     align-items: center;
   }
 
-  .form-control,
-  .form-select {
-    padding: 10px 15px;
-    border-radius: 8px;
+  .map-wrapper h3 i {
+    margin-right: 10px;
+    color: #4ca1af;
   }
 
-  textarea.form-control {
-    min-height: 120px;
+  .map-responsive {
+    position: relative;
+    padding-bottom: 60%;
+    height: 0;
+    overflow: hidden;
   }
 
-  .btn-block {
+  .map-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-radius: 8px;
-    font-weight: 500;
-    padding: 12px;
+    height: 100%;
+    border: none;
   }
 
-  @media (max-width: 992px) {
-    .map-container {
-      margin-top: 30px;
-    }
+  .contact-info-box {
+    padding: 20px;
+    background: #f8f9fa;
+  }
+
+  .info-item {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .info-item i {
+    font-size: 1.2rem;
+    color: #4ca1af;
+    margin-right: 15px;
+    margin-top: 3px;
+  }
+
+  .info-item h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+  }
+
+  .info-item p {
+    margin: 0;
+    color: #666;
+  }
+
+  /* Form Column */
+  .form-column {
+    position: relative;
+  }
+
+  .form-wrapper {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    height: 100%;
+  }
+
+  .form-wrapper h2 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .form-wrapper p {
+    color: #666;
+    margin-bottom: 25px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 20px;
+  }
+
+  .form-row .form-group {
+    flex: 1;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .input-with-icon,
+  .select-with-icon {
+    position: relative;
+  }
+
+  .input-with-icon i,
+  .select-with-icon i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4ca1af;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+
+  .select-with-icon select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 15px;
+  }
+
+  textarea {
+    padding: 15px;
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #4ca1af;
+    box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.2);
+  }
+
+  .submit-btn {
+    background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submit-btn i {
+    margin-right: 10px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Social Section */
+  .social-section {
+    text-align: center;
+    margin: 50px 0;
+  }
+
+  .social-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .social-link {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+  }
+
+  .social-link:hover {
+    transform: translateY(-5px);
+  }
+
+  .facebook {
+    background: #3b5998;
+  }
+  .twitter {
+    background: #1da1f2;
+  }
+  .instagram {
+    background: linear-gradient(
+      45deg,
+      #405de6,
+      #5851db,
+      #833ab4,
+      #c13584,
+      #e1306c,
+      #fd1d1d
+    );
+  }
+  .linkedin {
+    background: #0077b5;
+  }
+  .youtube {
+    background: #ff0000;
+  }
+
+  /* Alerts */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
   }
 </style>
 {% endblock %}
