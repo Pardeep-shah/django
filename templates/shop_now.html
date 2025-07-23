@@ -1,7 +1,747 @@
-{% extends "base.html" %} {% block content %}
-<div class="container mt-5 text-center">
-  <h1>Shop Now</h1>
-  <p>Explore our range of high-quality, curated products just for you.</p>
-  <a href="/categories" class="btn btn-primary">Browse Categories</a>
-</div>
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<!-- Shop Now Hero Section -->
+<section
+  class="shop-hero"
+  style="
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url('{% static 'images/shop-hero-bg.jpg' %}');
+    background-size: cover;
+    background-position: center;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: white;
+  "
+>
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h1 style="font-size: 3.5rem; margin-bottom: 20px; font-weight: 700">
+      Our Collection
+    </h1>
+    <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px">
+      Discover our carefully curated selection of premium products
+    </p>
+    <div style="display: flex; justify-content: center; gap: 15px">
+      <a
+        href="#featured"
+        style="
+          background: #ff6b6b;
+          color: white;
+          padding: 12px 30px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: 600;
+        "
+        >Featured</a
+      >
+      <a
+        href="#new-arrivals"
+        style="
+          background: transparent;
+          color: white;
+          padding: 12px 30px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: 600;
+          border: 2px solid white;
+        "
+        >New Arrivals</a
+      >
+    </div>
+  </div>
+</section>
+
+<!-- Product Filter Section -->
+<section style="padding: 40px 0; background: #f9f9f9">
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      "
+    >
+      <div style="flex: 1; min-width: 250px">
+        <input
+          type="text"
+          placeholder="Search products..."
+          style="
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+          "
+        />
+      </div>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap">
+        <select
+          style="padding: 12px; border-radius: 5px; border: 1px solid #ddd"
+        >
+          <option>All Categories</option>
+          {% for category in categories %}
+          <option>{{ category.Category_name }}</option>
+          {% endfor %}
+        </select>
+        <select
+          style="padding: 12px; border-radius: 5px; border: 1px solid #ddd"
+        >
+          <option>Sort By</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Most Popular</option>
+          <option>Newest First</option>
+        </select>
+        <button
+          style="
+            padding: 12px 25px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          "
+        >
+          Filter
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products Section -->
+<section id="featured" style="padding: 60px 0">
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
+        position: relative;
+      "
+    >
+      Featured Products
+      <span
+        style="
+          position: absolute;
+          bottom: -15px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+          height: 3px;
+          background: #ff6b6b;
+        "
+      ></span>
+    </h2>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+      "
+    >
+      {% for product in featured_products %}
+      <div
+        style="
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+          transition: all 0.3s ease;
+          position: relative;
+        "
+      >
+        <!-- Featured Badge -->
+        <div
+          style="
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+          "
+        >
+          FEATURED
+        </div>
+
+        <!-- Product Image -->
+        <div style="height: 250px; overflow: hidden; position: relative">
+          <img
+            src="{{ product.product_image.url }}"
+            alt="{{ product.product_name }}"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: transform 0.5s ease;
+            "
+          />
+          <div
+            style="
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.7),
+                transparent
+              );
+              padding: 20px;
+              color: white;
+            "
+          >
+            <h3 style="margin: 0; font-size: 1.2rem">
+              {{ product.product_name }}
+            </h3>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div style="padding: 20px">
+          <!-- Rating -->
+          <div style="color: #ffc107; margin-bottom: 10px">
+            ★★★★★
+            <span style="color: #777; font-size: 0.8rem"
+              >({{ product.review_count }})</span
+            >
+          </div>
+
+          <!-- Price -->
+          <div
+            style="
+              margin-bottom: 15px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <span style="font-size: 1.3rem; font-weight: 700; color: #2c3e50">
+              ${{ product.selling_price }}
+            </span>
+            {% if product.discount_percentage > 0 %}
+            <span
+              style="
+                font-size: 0.9rem;
+                color: #999;
+                text-decoration: line-through;
+              "
+            >
+              ${{ product.original_price }}
+            </span>
+            <span
+              style="
+                background: #ff4757;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 5px;
+                font-size: 0.8rem;
+              "
+            >
+              Save {{ product.discount_percentage }}%
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 10px">
+            <a
+              href="{% url 'add_to_cart' product.id %}"
+              style="
+                flex: 1;
+                padding: 12px;
+                background: #4caf50;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+                text-decoration: none;
+                transition: background 0.3s ease;
+              "
+            >
+              Add to Cart
+            </a>
+            <a
+              href="{% url 'add_to_wishlist' product.id %}"
+              style="
+                width: 45px;
+                height: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f8f9fa;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+              "
+            >
+              <span style="color: #ff4757; font-size: 1.3rem">♥</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- New Arrivals Section -->
+<section id="new-arrivals" style="padding: 60px 0; background: #f9f9f9">
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
+        position: relative;
+      "
+    >
+      New Arrivals
+      <span
+        style="
+          position: absolute;
+          bottom: -15px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+          height: 3px;
+          background: #4ca1af;
+        "
+      ></span>
+    </h2>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+      "
+    >
+      {% for product in new_arrivals %}
+      <div
+        style="
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+          transition: all 0.3s ease;
+        "
+      >
+        <!-- New Arrival Badge -->
+        <div
+          style="
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #4ca1af;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+          "
+        >
+          NEW
+        </div>
+
+        <!-- Product Image -->
+        <div style="height: 250px; overflow: hidden">
+          <img
+            src="{{ product.product_image.url }}"
+            alt="{{ product.product_name }}"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: transform 0.5s ease;
+            "
+          />
+        </div>
+
+        <!-- Product Info -->
+        <div style="padding: 20px">
+          <h3 style="margin: 0 0 10px 0; font-size: 1.2rem; color: #333">
+            {{ product.product_name }}
+          </h3>
+
+          <!-- Price -->
+          <div style="margin-bottom: 15px">
+            <span style="font-size: 1.3rem; font-weight: 700; color: #2c3e50">
+              ${{ product.selling_price }}
+            </span>
+            {% if product.discount_percentage > 0 %}
+            <span
+              style="
+                font-size: 0.9rem;
+                color: #999;
+                text-decoration: line-through;
+                margin-left: 5px;
+              "
+            >
+              ${{ product.original_price }}
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Quick View Button -->
+          <a
+            href="#"
+            style="
+              display: block;
+              padding: 12px;
+              background: #2c3e50;
+              color: white;
+              text-align: center;
+              border-radius: 5px;
+              text-decoration: none;
+              margin-bottom: 10px;
+              transition: background 0.3s ease;
+            "
+          >
+            Quick View
+          </a>
+
+          <!-- Add to Cart Button -->
+          <a
+            href="{% url 'add_to_cart' product.id %}"
+            style="
+              display: block;
+              padding: 12px;
+              background: #4caf50;
+              color: white;
+              text-align: center;
+              border-radius: 5px;
+              text-decoration: none;
+              transition: background 0.3s ease;
+            "
+          >
+            Add to Cart
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div style="display: flex; justify-content: center; margin-top: 50px">
+      <div style="display: flex; gap: 10px">
+        <a
+          href="#"
+          style="
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2c3e50;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+          "
+          >1</a
+        >
+        <a
+          href="#"
+          style="
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+          "
+          >2</a
+        >
+        <a
+          href="#"
+          style="
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+          "
+          >3</a
+        >
+        <span
+          style="
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+          "
+          >...</span
+        >
+        <a
+          href="#"
+          style="
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+          "
+          >10</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories Banner -->
+<section style="padding: 60px 0">
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
+      "
+    >
+      Shop by Category
+    </h2>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      "
+    >
+      {% for category in categories %}
+      <a
+        href="{% url 'category_products' category.id %}"
+        style="
+          text-decoration: none;
+          color: inherit;
+          position: relative;
+          border-radius: 10px;
+          overflow: hidden;
+          height: 200px;
+          display: block;
+        "
+      >
+        <img
+          src="{{ category.category_image.url }}"
+          alt="{{ category.Category_name }}"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+          "
+        />
+        <div
+          style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(
+              to top,
+              rgba(0, 0, 0, 0.8),
+              transparent
+            );
+            padding: 20px;
+            color: white;
+            text-align: center;
+          "
+        >
+          <h3 style="margin: 0; font-size: 1.3rem">
+            {{ category.Category_name }}
+          </h3>
+          <p style="margin: 5px 0 0; font-size: 0.9rem">
+            {{ category.product_set.count }} items
+          </p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Special Offer Banner -->
+<section
+  style="
+    padding: 60px 0;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  "
+>
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <div
+      style="
+        background: white;
+        border-radius: 10px;
+        padding: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <div style="flex: 1; min-width: 300px">
+        <h2 style="font-size: 2.2rem; color: #ff4757; margin-bottom: 15px">
+          Limited Time Offer!
+        </h2>
+        <p style="font-size: 1.1rem; color: #333; margin-bottom: 20px">
+          Get 30% off on all summer collection items. Use code
+          <strong>SUMMER30</strong> at checkout.
+        </p>
+        <div style="display: flex; gap: 15px">
+          <a
+            href="#"
+            style="
+              padding: 12px 30px;
+              background: #ff4757;
+              color: white;
+              border-radius: 30px;
+              text-decoration: none;
+              font-weight: 600;
+            "
+            >Shop Now</a
+          >
+          <a
+            href="#"
+            style="
+              padding: 12px 30px;
+              background: transparent;
+              color: #333;
+              border-radius: 30px;
+              text-decoration: none;
+              font-weight: 600;
+              border: 2px solid #333;
+            "
+            >Learn More</a
+          >
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 300px; text-align: center">
+        <img
+          src="{% static 'images/special-offer.png' %}"
+          alt="Special Offer"
+          style="max-width: 100%; height: auto; max-height: 250px"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hover Effects */
+  .shop-hero {
+    transition: all 0.5s ease;
+  }
+
+  .shop-hero:hover {
+    background-size: 110%;
+  }
+
+  [style*="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"]
+    > div:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  [style*="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"]
+    > div:hover
+    img {
+    transform: scale(1.05);
+  }
+
+  [style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"]
+    > a:hover
+    img {
+    transform: scale(1.1);
+  }
+
+  /* Button Hover Effects */
+  a[style*="background: #4caf50"]:hover {
+    background: #3e8e41 !important;
+  }
+
+  a[style*="background: #2c3e50"]:hover {
+    background: #1a252f !important;
+  }
+
+  a[style*="background: #ff4757"]:hover {
+    background: #e84118 !important;
+  }
+
+  a[style*="background: #ff6b6b"]:hover {
+    background: #ff4757 !important;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .shop-hero {
+      height: 60vh;
+    }
+
+    .shop-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    [style*="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"] {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .shop-hero h1 {
+      font-size: 2rem;
+    }
+
+    .shop-hero p {
+      font-size: 1rem;
+    }
+
+    [style*="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"] {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
 {% endblock %}

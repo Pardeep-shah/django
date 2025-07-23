@@ -1,55 +1,43 @@
-{% extends "base.html" %} {% comment %} {% load static %} {% block title %}My
-Orders{%endblock %} {% endcomment %} {% block content %}
-<div class="orders-container">
+{% extends "base.html" %} {% load static %} {% comment %} {% block title %}My
+Orders{% endblock %} {% endcomment %} {% block content %}
+<div class="orders-wrapper">
   <div class="orders-header">
     <h1><i class="fas fa-clipboard-list"></i> My Orders</h1>
-    <p>View and manage all your orders in one place</p>
+    <p>Track and manage all your purchases in one place</p>
   </div>
 
   {% if orders %}
-  <div class="orders-list">
+  <div class="orders-grid">
     {% for order in orders %}
     <div
       class="order-card {% if order.status == 'Delivered' %}delivered{% elif order.status == 'Cancelled' %}cancelled{% else %}processing{% endif %}"
     >
       <div class="order-header">
-        <div class="order-id">Order #{{ order.id }}</div>
-        <div class="order-status">{{ order.status }}</div>
-        <div class="order-date">{{ order.created_at|date:"d M Y" }}</div>
+        <span class="order-id">Order #{{ order.id }}</span>
+        <span class="order-status">{{ order.status }}</span>
       </div>
-
       <div class="order-details">
-        <div class="customer-info">
-          <h3><i class="fas fa-user"></i> {{ order.full_name }}</h3>
-          <p>
-            <i class="fas fa-map-marker-alt"></i> {{ order.shipping_address }}
-          </p>
+        <div class="detail-row">
+          <span><i class="far fa-calendar-alt"></i> Date:</span>
+          <span>{{ order.created_at|date:"d M Y" }}</span>
         </div>
-
-        <div class="order-summary">
-          <div class="summary-item">
-            <span>Items:</span>
-            <span>{{ order.items.count }}</span>
-          </div>
-          <div class="summary-item">
-            <span>Total:</span>
-            <span class="price">₹{{ order.total_amount }}</span>
-          </div>
+        <div class="detail-row">
+          <span><i class="fas fa-user"></i> Customer:</span>
+          <span>{{ order.full_name }}</span>
+        </div>
+        <div class="detail-row">
+          <span><i class="fas fa-rupee-sign"></i> Total:</span>
+          <span class="order-total">₹{{ order.total_amount }}</span>
         </div>
       </div>
-
       <div class="order-actions">
-        <a href="#" class="btn btn-view"
-          ><i class="fas fa-eye"></i> View Details</a
-        >
-        {% if order.status != 'Cancelled' and order.status != 'Delivered' %}
-        <a href="#" class="btn btn-cancel"
-          ><i class="fas fa-times"></i> Cancel Order</a
-        >
-        {% endif %} {% if order.status == 'Delivered' %}
-        <a href="#" class="btn btn-review"
-          ><i class="fas fa-star"></i> Leave Review</a
-        >
+        <a href="#" class="btn-view">
+          <i class="fas fa-eye"></i> View Details
+        </a>
+        {% if order.status != 'Cancelled' %}
+        <a href="#" class="btn-track">
+          <i class="fas fa-truck"></i> Track Order
+        </a>
         {% endif %}
       </div>
     </div>
@@ -57,307 +45,235 @@ Orders{%endblock %} {% endcomment %} {% block content %}
   </div>
   {% else %}
   <div class="no-orders">
-    <div class="empty-state">
-      <img src="" alt="No orders" class="empty-image" />
-      <h2>No Orders Yet</h2>
-      <p>
-        You haven't placed any orders with us yet. Start shopping to see your
-        orders here!
-      </p>
-      <a href="{% url 'shop_now_page' %}" class="btn btn-shop">Shop Now</a>
-    </div>
+    <img
+      src="{% static 'images/empty-orders.png' %}"
+      alt="No orders"
+      class="empty-img"
+    />
+    <h3>No Orders Yet</h3>
+    <p>You haven't placed any orders with us yet. Start shopping now!</p>
+    <a href="{% url 'shop_now_page' %}" class="btn-shop">Shop Now</a>
   </div>
   {% endif %}
 </div>
 {% endblock %} {% block extra_css %}
 <style>
-  /* Base Styles */
-  .orders-container {
+  .orders-wrapper {
     max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1.5rem;
+    margin: 40px auto;
+    padding: 0 20px;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
 
   .orders-header {
     text-align: center;
-    margin-bottom: 2.5rem;
-    color: #333;
+    margin-bottom: 40px;
   }
 
   .orders-header h1 {
+    color: #2c3e50;
     font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+  }
+
+  .orders-header h1 i {
+    margin-right: 15px;
+    color: #3498db;
   }
 
   .orders-header p {
+    color: #7f8c8d;
     font-size: 1.1rem;
-    color: #666;
   }
 
-  /* Order Card Styles */
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+  }
+
   .order-card {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 1.5rem;
-    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid #4caf50;
+    border-left: 4px solid #3498db;
   }
 
   .order-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  }
-
-  .order-card.processing {
-    border-left-color: #ffc107;
-  }
-
-  .order-card.cancelled {
-    border-left-color: #f44336;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 
   .order-card.delivered {
-    border-left-color: #4caf50;
+    border-left-color: #2ecc71;
+  }
+
+  .order-card.cancelled {
+    border-left-color: #e74c3c;
+  }
+
+  .order-card.processing {
+    border-left-color: #f39c12;
   }
 
   .order-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 1.5rem;
-    background: #f9f9f9;
-    border-bottom: 1px solid #eee;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ecf0f1;
   }
 
   .order-id {
-    font-weight: 600;
-    color: #333;
+    font-weight: bold;
+    color: #2c3e50;
   }
 
   .order-status {
-    padding: 0.35rem 0.8rem;
+    padding: 5px 10px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: bold;
     text-transform: uppercase;
   }
 
-  .processing .order-status {
-    background: #fff3e0;
-    color: #ff8f00;
+  .delivered .order-status {
+    background-color: #d5f5e3;
+    color: #27ae60;
   }
 
   .cancelled .order-status {
-    background: #ffebee;
-    color: #f44336;
+    background-color: #fadbd8;
+    color: #e74c3c;
   }
 
-  .delivered .order-status {
-    background: #e8f5e9;
-    color: #2e7d32;
-  }
-
-  .order-date {
-    color: #666;
-    font-size: 0.9rem;
+  .processing .order-status {
+    background-color: #fdebd0;
+    color: #f39c12;
   }
 
   .order-details {
-    display: flex;
-    padding: 1.5rem;
-    flex-wrap: wrap;
-    gap: 2rem;
+    margin-bottom: 20px;
   }
 
-  .customer-info {
-    flex: 1;
-    min-width: 250px;
-  }
-
-  .customer-info h3 {
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #333;
-  }
-
-  .customer-info p {
-    color: #666;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-  }
-
-  .order-summary {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    min-width: 200px;
-  }
-
-  .summary-item {
+  .detail-row {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
   }
 
-  .summary-item span:first-child {
-    color: #666;
+  .detail-row span:first-child {
+    color: #7f8c8d;
   }
 
-  .summary-item span:last-child {
-    font-weight: 600;
-    color: #333;
+  .detail-row i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
   }
 
-  .price {
-    color: #4caf50 !important;
+  .order-total {
+    font-weight: bold;
     font-size: 1.1rem;
+    color: #2c3e50;
   }
 
   .order-actions {
     display: flex;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    background: #f9f9f9;
-    border-top: 1px solid #eee;
+    gap: 10px;
     flex-wrap: wrap;
   }
 
-  .btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-weight: 500;
+  .btn-view,
+  .btn-track,
+  .btn-shop {
+    padding: 8px 15px;
+    border-radius: 5px;
     text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
   }
 
   .btn-view {
-    background: #2196f3;
+    background-color: #3498db;
     color: white;
   }
 
   .btn-view:hover {
-    background: #0b7dda;
+    background-color: #2980b9;
   }
 
-  .btn-cancel {
-    background: #ffebee;
-    color: #f44336;
-    border: 1px solid #f44336;
+  .btn-track {
+    background-color: #f1f1f1;
+    color: #2c3e50;
   }
 
-  .btn-cancel:hover {
-    background: #f44336;
-    color: white;
+  .btn-track:hover {
+    background-color: #e0e0e0;
   }
 
-  .btn-review {
-    background: #ffc107;
-    color: #333;
+  .btn-view i,
+  .btn-track i {
+    margin-right: 5px;
   }
 
-  .btn-review:hover {
-    background: #ffa000;
+  .no-orders {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .empty-img {
+    max-width: 200px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .no-orders h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .no-orders p {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .btn-shop {
-    background: #4caf50;
+    background-color: #3498db;
     color: white;
-    padding: 0.8rem 1.8rem;
-    font-size: 1.1rem;
-    margin-top: 1rem;
+    padding: 10px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
   }
 
   .btn-shop:hover {
-    background: #388e3c;
+    background-color: #2980b9;
   }
 
-  /* Empty State */
-  .no-orders {
-    text-align: center;
-    padding: 3rem 0;
-  }
-
-  .empty-state {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .empty-image {
-    max-width: 300px;
-    margin-bottom: 1.5rem;
-  }
-
-  .empty-state h2 {
-    color: #333;
-    margin-bottom: 0.75rem;
-  }
-
-  .empty-state p {
-    color: #666;
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Responsive Styles */
   @media (max-width: 768px) {
-    .orders-container {
-      padding: 1rem;
+    .orders-grid {
+      grid-template-columns: 1fr;
     }
 
     .orders-header h1 {
       font-size: 2rem;
     }
-
-    .order-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .order-details {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .order-actions {
-      flex-direction: column;
-    }
-
-    .btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .orders-header h1 {
-      font-size: 1.8rem;
-    }
-
-    .order-card {
-      border-radius: 8px;
-    }
   }
 </style>
-{% endblock %} {% block extra_js %}
-<!-- Font Awesome for icons -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-/>
 {% endblock %}

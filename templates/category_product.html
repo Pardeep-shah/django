@@ -1,210 +1,239 @@
-{% extends "base.html" %} {% load static %} {% comment %} {% block title
-%}Categories{% endblock %} {% endcomment %} {% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-<!-- Hero Section -->
-<div
-  class="category-hero"
+<!-- Hero Banner with Call-to-Action -->
+<section
+  class="hero-section"
   style="
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 80px 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url('{% static 'images/hero-bg.jpg' %}');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    align-items: center;
     color: white;
-    text-align: center;
-  "
->
-  <h1
-    style="
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    "
-  >
-    {{ category.Category_name }}
-  </h1>
-  <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto">
-    Discover our premium collection of {{ category.Category_name }}. Quality
-    products at unbeatable prices.
-  </p>
-</div>
-
-<!-- Filter and Sort Options -->
-<div
-  class="product-controls"
-  style="
-    background: #f8f9fa;
-    padding: 20px;
-    margin: 30px auto;
-    max-width: 1200px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   "
 >
   <div
-    style="
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    "
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
   >
-    <div style="margin: 10px">
-      <span style="font-weight: 600; margin-right: 10px">Filter:</span>
-      <select
-        style="padding: 8px 15px; border-radius: 5px; border: 1px solid #ddd"
+    <div class="hero-content" style="max-width: 600px">
+      <h1 style="font-size: 3.5rem; margin-bottom: 20px; font-weight: 700">
+        Discover Amazing Products
+      </h1>
+      <p style="font-size: 1.2rem; margin-bottom: 30px">
+        Shop the latest trends and enjoy exclusive discounts on premium
+        products.
+      </p>
+      <a
+        href="{% url 'shop_now_page' %}"
+        style="
+          background: #ff6b6b;
+          color: white;
+          padding: 12px 30px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: 600;
+          display: inline-block;
+          transition: all 0.3s ease;
+        "
+        >Shop Now</a
       >
-        <option>All Products</option>
-        <option>Price: Low to High</option>
-        <option>Price: High to Low</option>
-        <option>Newest Arrivals</option>
-        <option>Top Rated</option>
-      </select>
-    </div>
-    <div style="margin: 10px">
-      <span style="font-weight: 600; margin-right: 10px">Sort By:</span>
-      <select
-        style="padding: 8px 15px; border-radius: 5px; border: 1px solid #ddd"
-      >
-        <option>Recommended</option>
-        <option>Popularity</option>
-        <option>Discount</option>
-      </select>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Products Grid -->
-<div
-  class="products-grid"
-  style="max-width: 1400px; margin: 50px auto; padding: 0 20px"
+<!-- Featured Categories Section -->
+<section
+  class="categories-section"
+  style="padding: 80px 0; background: #f9f9f9"
 >
   <div
-    style="
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 30px;
-      justify-items: center;
-    "
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
   >
-    {% for product in products_variable %}
-    <div
-      class="product-card"
+    <h2
       style="
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
       "
     >
-      <!-- Badge for Discount/Sale -->
-      {% if product.discount_percentage > 0 %}
+      Shop by Category
+    </h2>
+
+    <div
+      class="categories-grid"
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+      "
+    >
+      {% for category in featured_categories %}
       <div
+        class="category-card"
         style="
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          background: #ff4757;
-          color: white;
-          padding: 5px 10px;
-          border-radius: 20px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          z-index: 2;
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
         "
       >
-        {{ product.discount_percentage }}% OFF
+        <a
+          href="{% url 'category_products' category.id %}"
+          style="text-decoration: none; color: inherit"
+        >
+          <div style="height: 200px; overflow: hidden">
+            <img
+              src="{{ category.category_image.url }}"
+              alt="{{ category.Category_name }}"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+              "
+            />
+          </div>
+          <div style="padding: 20px; text-align: center">
+            <h3 style="margin: 0; font-size: 1.3rem; color: #333">
+              {{ category.Category_name }}
+            </h3>
+            <p style="color: #666; margin-top: 10px">
+              {{ category.product_set.count }} items
+            </p>
+          </div>
+        </a>
       </div>
-      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-      <!-- Product Image -->
-      <div style="height: 220px; overflow: hidden; position: relative">
-        <img
-          src="{{ product.product_image.url }}"
-          alt="{{ product.product_name }}"
-          style="
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-          "
-        />
-        <!-- Quick View Button -->
+<!-- Flash Sale Section (50% Discount) -->
+<section
+  class="flash-sale-section"
+  style="
+    padding: 80px 0;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  "
+>
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      "
+    >
+      <h2 style="font-size: 2.5rem; color: white; margin: 0">
+        50% OFF Flash Sale
+      </h2>
+      <div
+        class="countdown"
+        style="
+          background: rgba(255, 255, 255, 0.2);
+          padding: 10px 20px;
+          border-radius: 30px;
+          color: white;
+          font-weight: 600;
+        "
+      >
+        <span id="hours">12</span>h : <span id="minutes">45</span>m :
+        <span id="seconds">30</span>s
+      </div>
+    </div>
+
+    <div
+      class="products-grid"
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+      "
+    >
+      {% for product in discounted_products %}
+      <div
+        class="product-card"
+        style="
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
+          position: relative;
+        "
+      >
+        <!-- Discount Badge -->
         <div
           style="
             position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2;
           "
         >
-          <a
-            href=""
+          {{ product.discount_percentage }}% OFF
+        </div>
+
+        <!-- Product Image -->
+        <div style="height: 200px; overflow: hidden; position: relative">
+          <img
+            src="{{ product.product_image.url }}"
+            alt="{{ product.product_name }}"
+            style="width: 100%; height: 100%; object-fit: cover"
+          />
+        </div>
+
+        <!-- Product Info -->
+        <div style="padding: 20px">
+          <h3
             style="
-              padding: 8px 20px;
-              background: rgba(255, 255, 255, 0.9);
+              margin: 0 0 10px 0;
+              font-size: 1.1rem;
               color: #333;
-              border-radius: 20px;
-              font-weight: 600;
-              text-decoration: none;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+              height: 40px;
+              overflow: hidden;
             "
           >
-            Quick View
-          </a>
-        </div>
-      </div>
+            {{ product.product_name }}
+          </h3>
 
-      <!-- Product Info -->
-      <div style="padding: 20px">
-        <h3
-          style="
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
-            color: #333;
-            height: 40px;
-            overflow: hidden;
-          "
-        >
-          {{ product.product_name }}
-        </h3>
+          <!-- Price -->
+          <div style="margin-bottom: 15px">
+            <span style="font-size: 1.2rem; font-weight: 700; color: #ff4757"
+              >${{ product.selling_price }}</span
+            >
+            <span
+              style="
+                font-size: 0.9rem;
+                color: #999;
+                text-decoration: line-through;
+                margin-left: 5px;
+              "
+              >${{ product.original_price }}</span
+            >
+          </div>
 
-        <!-- Price Section -->
-        <div style="margin-bottom: 15px">
-          {% if product.discount_percentage > 0 %}
-          <span style="font-size: 1.2rem; font-weight: 700; color: #ff4757">
-            ${{ product.selling_price }}
-          </span>
-          <span
-            style="
-              font-size: 0.9rem;
-              color: #999;
-              text-decoration: line-through;
-              margin-left: 5px;
-            "
-          >
-            ${{ product.original_price }}
-          </span>
-          {% else %}
-          <span style="font-size: 1.2rem; font-weight: 700; color: #333">
-            ${{ product.selling_price }}
-          </span>
-          {% endif %}
-        </div>
-
-        <!-- Rating Stars -->
-        <div style="color: #ffc107; margin-bottom: 15px; font-size: 0.9rem">
-          ★★★★☆ <span style="color: #777; font-size: 0.8rem">(24)</span>
-        </div>
-
-        <!-- Action Buttons -->
-        <div style="display: flex; gap: 10px">
+          <!-- Add to Cart Button -->
           <a
             href="{% url 'add_to_cart' product.id %}"
             style="
-              flex: 1;
+              display: block;
               padding: 10px;
               background: #4caf50;
               color: white;
@@ -213,160 +242,431 @@
               text-decoration: none;
               transition: background 0.3s ease;
             "
+            >Add to Cart</a
           >
-            Add to Cart
-          </a>
-          <a
-            href="{% url 'add_to_wishlist' product.id %}"
-            style="
-              width: 40px;
-              height: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: #f8f9fa;
-              border-radius: 5px;
-              transition: background 0.3s ease;
-            "
-          >
-            <span style="color: #ff4757; font-size: 1.2rem">♥</span>
-          </a>
         </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-</div>
 
-<!-- Pagination -->
-<div style="display: flex; justify-content: center; margin: 50px 0">
-  <div style="display: flex; gap: 10px">
-    <a
-      href="#"
-      style="
-        padding: 10px 15px;
-        background: #f8f9fa;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-      "
-      >&laquo;</a
-    >
-    <a
-      href="#"
-      style="
-        padding: 10px 15px;
-        background: #4caf50;
-        border-radius: 5px;
-        text-decoration: none;
-        color: white;
-      "
-      >1</a
-    >
-    <a
-      href="#"
-      style="
-        padding: 10px 15px;
-        background: #f8f9fa;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-      "
-      >2</a
-    >
-    <a
-      href="#"
-      style="
-        padding: 10px 15px;
-        background: #f8f9fa;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-      "
-      >3</a
-    >
-    <a
-      href="#"
-      style="
-        padding: 10px 15px;
-        background: #f8f9fa;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-      "
-      >&raquo;</a
-    >
+    <div style="text-align: center; margin-top: 40px">
+      <a
+        href="{% url 'shop_now_page' %}"
+        style="
+          background: white;
+          color: #ff6b6b;
+          padding: 12px 30px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: 600;
+          display: inline-block;
+        "
+        >View All Discounted Items</a
+      >
+    </div>
   </div>
-</div>
+</section>
+
+<!-- Top Products Section -->
+<section class="top-products-section" style="padding: 80px 0">
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
+      "
+    >
+      Our Top Products
+    </h2>
+
+    <div
+      class="products-grid"
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+      "
+    >
+      {% for product in top_products %}
+      <div
+        class="product-card"
+        style="
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
+          position: relative;
+        "
+      >
+        <!-- Top Product Badge -->
+        <div
+          style="
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ffd700;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2;
+          "
+        >
+          BESTSELLER
+        </div>
+
+        <!-- Product Image -->
+        <div style="height: 200px; overflow: hidden; position: relative">
+          <img
+            src="{{ product.product_image.url }}"
+            alt="{{ product.product_name }}"
+            style="width: 100%; height: 100%; object-fit: cover"
+          />
+        </div>
+
+        <!-- Product Info -->
+        <div style="padding: 20px">
+          <h3
+            style="
+              margin: 0 0 10px 0;
+              font-size: 1.1rem;
+              color: #333;
+              height: 40px;
+              overflow: hidden;
+            "
+          >
+            {{ product.product_name }}
+          </h3>
+
+          <!-- Rating -->
+          <div style="color: #ffc107; margin-bottom: 10px; font-size: 0.9rem">
+            ★★★★★
+            <span style="color: #777; font-size: 0.8rem"
+              >({{ product.review_count }})</span
+            >
+          </div>
+
+          <!-- Price -->
+          <div style="margin-bottom: 15px">
+            <span style="font-size: 1.2rem; font-weight: 700; color: #333"
+              >${{ product.selling_price }}</span
+            >
+            {% if product.discount_percentage > 0 %}
+            <span
+              style="
+                font-size: 0.9rem;
+                color: #999;
+                text-decoration: line-through;
+                margin-left: 5px;
+              "
+              >${{ product.original_price }}</span
+            >
+            {% endif %}
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 10px">
+            <a
+              href="{% url 'add_to_cart' product.id %}"
+              style="
+                flex: 1;
+                padding: 10px;
+                background: #4caf50;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+                text-decoration: none;
+                transition: background 0.3s ease;
+              "
+              >Add to Cart</a
+            >
+            <a
+              href="{% url 'add_to_wishlist' product.id %}"
+              style="
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f8f9fa;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+              "
+            >
+              <span style="color: #ff4757; font-size: 1.2rem">♥</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section
+  class="testimonials-section"
+  style="padding: 80px 0; background: #f9f9f9"
+>
+  <div
+    class="container"
+    style="max-width: 1200px; margin: 0 auto; padding: 0 20px"
+  >
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #333;
+      "
+    >
+      What Our Customers Say
+    </h2>
+
+    <div
+      class="testimonials-grid"
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      "
+    >
+      <!-- Testimonial 1 -->
+      <div
+        class="testimonial-card"
+        style="
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        "
+      >
+        <div style="display: flex; align-items: center; margin-bottom: 20px">
+          <img
+            src="{% static 'images/user1.jpg' %}"
+            alt="Customer"
+            style="
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 15px;
+            "
+          />
+          <div>
+            <h4 style="margin: 0; color: #333">Sarah Johnson</h4>
+            <div style="color: #ffc107">★★★★★</div>
+          </div>
+        </div>
+        <p style="color: #666; font-style: italic">
+          "I absolutely love the quality of products from this store. The
+          shipping was fast and the customer service is exceptional!"
+        </p>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div
+        class="testimonial-card"
+        style="
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        "
+      >
+        <div style="display: flex; align-items: center; margin-bottom: 20px">
+          <img
+            src="{% static 'images/user2.jpg' %}"
+            alt="Customer"
+            style="
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 15px;
+            "
+          />
+          <div>
+            <h4 style="margin: 0; color: #333">Michael Chen</h4>
+            <div style="color: #ffc107">★★★★☆</div>
+          </div>
+        </div>
+        <p style="color: #666; font-style: italic">
+          "Great selection of products at reasonable prices. The 50% discount
+          section is my favorite - always find amazing deals there!"
+        </p>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div
+        class="testimonial-card"
+        style="
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        "
+      >
+        <div style="display: flex; align-items: center; margin-bottom: 20px">
+          <img
+            src="{% static 'images/user3.jpg' %}"
+            alt="Customer"
+            style="
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 15px;
+            "
+          />
+          <div>
+            <h4 style="margin: 0; color: #333">Emma Rodriguez</h4>
+            <div style="color: #ffc107">★★★★★</div>
+          </div>
+        </div>
+        <p style="color: #666; font-style: italic">
+          "The top products section always has exactly what I need. I've
+          purchased 5 items from there and all have exceeded my expectations."
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Newsletter Subscription -->
-<div
+<section
+  class="newsletter-section"
   style="
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 60px 20px;
-    text-align: center;
-    margin-top: 50px;
+    padding: 60px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
   "
 >
-  <h2 style="margin-bottom: 20px">
-    Stay Updated with Our Latest {{ category.Category_name }}
-  </h2>
-  <p style="max-width: 600px; margin: 0 auto 30px; color: #555">
-    Subscribe to our newsletter to receive updates on new arrivals, special
-    offers, and more.
-  </p>
-  <form style="max-width: 500px; margin: 0 auto; display: flex">
-    <input
-      type="email"
-      placeholder="Your email address"
-      style="
-        flex: 1;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px 0 0 5px;
-        outline: none;
-      "
-    />
-    <button
-      type="submit"
-      style="
-        padding: 12px 20px;
-        background: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
-      "
-    >
-      Subscribe
-    </button>
-  </form>
-</div>
+  <div
+    class="container"
+    style="
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    "
+  >
+    <h2 style="font-size: 2.2rem; margin-bottom: 20px">Join Our Newsletter</h2>
+    <p style="font-size: 1.1rem; margin-bottom: 30px; opacity: 0.9">
+      Subscribe to get updates on new arrivals, special offers and discount
+      coupons.
+    </p>
+
+    <form style="display: flex; max-width: 500px; margin: 0 auto">
+      <input
+        type="email"
+        placeholder="Your email address"
+        style="
+          flex: 1;
+          padding: 15px;
+          border: none;
+          border-radius: 5px 0 0 5px;
+          outline: none;
+        "
+      />
+      <button
+        type="submit"
+        style="
+          padding: 15px 25px;
+          background: #ff6b6b;
+          color: white;
+          border: none;
+          border-radius: 0 5px 5px 0;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Subscribe
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Countdown Timer Script -->
+<script>
+  function updateCountdown() {
+    const now = new Date();
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const diff = endOfDay - now;
+
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("hours").textContent = Math.floor(hours)
+      .toString()
+      .padStart(2, "0");
+    document.getElementById("minutes").textContent = minutes
+      .toString()
+      .padStart(2, "0");
+    document.getElementById("seconds").textContent = seconds
+      .toString()
+      .padStart(2, "0");
+  }
+
+  // Update every second
+  setInterval(updateCountdown, 1000);
+  updateCountdown(); // Initial call
+</script>
 
 <style>
   /* Hover Effects */
+  .category-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .category-card:hover img {
+    transform: scale(1.1);
+  }
+
   .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  }
-
-  .product-card:hover img {
-    transform: scale(1.05);
-  }
-
-  .product-card:hover div[style*="opacity: 0"] {
-    opacity: 1 !important;
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
-    .products-grid div[style*="grid-template-columns"] {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+    .hero-section {
+      height: 60vh;
     }
 
-    .category-hero h1 {
+    .hero-content h1 {
       font-size: 2.5rem;
+    }
+
+    .categories-grid,
+    .products-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+
+    .categories-grid,
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .countdown {
+      padding: 5px 10px;
+      font-size: 0.9rem;
     }
   }
 </style>

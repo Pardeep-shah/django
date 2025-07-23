@@ -73,11 +73,6 @@ urlpatterns = [
 
     path('edit-profile/', edit_profile, name='edit_profile'),
 
-
-
-
-
- 
  ]
 
 
