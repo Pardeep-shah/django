@@ -1,656 +1,460 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-<div class="product-detail-container">
-  <div class="product-detail-card">
-    <!-- Product Image Section -->
-    <div class="product-image-section">
-      <div class="main-image">
-        <img
-          src="{{ product.product_image.url }}"
-          alt="{{ product.product_name }}"
-          id="main-product-image"
-        />
+
+<!-- Cart Page Container -->
+<div
+  class="cart-container"
+  style="max-width: 1200px; margin: 50px auto; padding: 0 20px"
+>
+  <h1
+    style="
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #333;
+      text-align: center;
+    "
+  >
+    Your Shopping Cart
+  </h1>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 30px">
+    <!-- Left Column - Order Summary -->
+    {% if cart_items %}
+    <div style="width: 350px; flex-shrink: 0">
+      <div
+        style="
+          background: white;
+          border-radius: 15px;
+          padding: 25px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        "
+      >
+        <h2
+          style="
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+          "
+        >
+          Order Summary
+        </h2>
+
+        <!-- Shipping Info -->
+        <div style="margin: 20px 0">
+          <h3 style="font-size: 1.1rem; color: #333; margin-bottom: 10px">
+            Shipping Information
+          </h3>
+          <form style="display: flex; flex-direction: column; gap: 10px">
+            <input
+              type="text"
+              placeholder="Full Name"
+              style="
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                outline: none;
+              "
+            />
+            <input
+              type="text"
+              placeholder="Address"
+              style="
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                outline: none;
+              "
+            />
+            <input
+              type="text"
+              placeholder="City"
+              style="
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                outline: none;
+              "
+            />
+            <div style="display: flex; gap: 10px">
+              <input
+                type="text"
+                placeholder="State"
+                style="
+                  padding: 12px 15px;
+                  border: 1px solid #ddd;
+                  border-radius: 8px;
+                  outline: none;
+                  flex: 1;
+                "
+              />
+              <input
+                type="text"
+                placeholder="ZIP Code"
+                style="
+                  padding: 12px 15px;
+                  border: 1px solid #ddd;
+                  border-radius: 8px;
+                  outline: none;
+                  flex: 1;
+                "
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Country"
+              style="
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                outline: none;
+              "
+            />
+          </form>
+        </div>
+
+        <!-- Promo Code -->
+        <div style="margin: 25px 0">
+          <h3 style="font-size: 1.1rem; color: #333; margin-bottom: 10px">
+            Promo Code
+          </h3>
+          <div style="display: flex">
+            <input
+              type="text"
+              placeholder="Enter promo code"
+              style="
+                flex-grow: 1;
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px 0 0 8px;
+                outline: none;
+              "
+            />
+            <button
+              style="
+                padding: 0 20px;
+                background: #333;
+                color: white;
+                border: none;
+                border-radius: 0 8px 8px 0;
+                cursor: pointer;
+              "
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+
+        <!-- Order Total -->
+        <div style="border-top: 1px solid #eee; padding-top: 15px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0;
+            "
+          >
+            <span style="color: #666">Subtotal</span>
+            <span style="font-weight: bold">${{ cart_total }}</span>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0;
+            "
+          >
+            <span style="color: #666">Shipping</span>
+            <span style="font-weight: bold">$5.00</span>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 15px 0;
+              font-size: 1.1rem;
+            "
+          >
+            <span style="font-weight: bold">Grand Total</span>
+            <span style="font-weight: bold; color: #2a2a2a"
+              >${{ cart_total|add:5 }}</span
+            >
+          </div>
+        </div>
+
+        <!-- Checkout Button -->
+        <a
+          href="{% url 'checkout' %}"
+          style="
+            display: block;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+          "
+        >
+          Proceed to Checkout
+        </a>
+
+        <!-- Payment Options -->
+        <div style="margin-top: 20px; text-align: center">
+          <p style="color: #999; font-size: 0.8rem; margin-bottom: 10px">
+            We accept
+          </p>
+          <div style="display: flex; justify-content: center; gap: 15px">
+            <img
+              src="{% static 'images/visa.png' %}"
+              alt="Visa"
+              style="height: 20px"
+            />
+            <img
+              src="{% static 'images/mastercard.png' %}"
+              alt="Mastercard"
+              style="height: 20px"
+            />
+            <img
+              src="{% static 'images/paypal.png' %}"
+              alt="PayPal"
+              style="height: 20px"
+            />
+          </div>
+        </div>
       </div>
-      <div class="thumbnail-gallery">
-        <!-- You can add thumbnail images here if available -->
+    </div>
+    {% endif %}
+
+    <!-- Right Column - Cart Items -->
+    <div style="flex: 1; min-width: 300px">
+      <div
+        style="
+          background: white;
+          border-radius: 15px;
+          padding: 25px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        "
+      >
+        {% if cart_items %} {% for item in cart_items %}
         <div
-          class="thumbnail active"
-          onclick="changeImage(this, '{{ product.product_image.url }}')"
+          class="cart-item"
+          style="
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+          "
         >
-          <img src="{{ product.product_image.url }}" alt="Thumbnail 1" />
+          <!-- Product Image -->
+          <div style="width: 120px; height: 120px; flex-shrink: 0">
+            <img
+              src="{{ item.product.Product_image.url }}"
+              alt="{{ item.product.Product_name }}"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 10px;
+              "
+            />
+          </div>
+
+          <!-- Product Details -->
+          <div style="flex-grow: 1">
+            <h3 style="margin: 0 0 10px; font-size: 1.2rem; color: #333">
+              {{ item.product.Product_name }}
+            </h3>
+            <p style="margin: 5px 0; color: #666; font-size: 0.9rem">
+              {{ item.product.Product_description|truncatewords:15 }}
+            </p>
+            <p style="margin: 5px 0; font-weight: bold; color: #2a2a2a">
+              ${{ item.product.Product_price }}
+            </p>
+
+            <!-- Quantity Controls -->
+            <div style="display: flex; align-items: center; margin-top: 15px">
+              <form
+                action="{% url 'add_to_cart' item.product.id %}"
+                method="post"
+                style="display: flex; align-items: center"
+              >
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  name="action"
+                  value="decrease"
+                  style="
+                    background: #f5f5f5;
+                    border: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    font-size: 1rem;
+                    cursor: pointer;
+                  "
+                >
+                  -
+                </button>
+                <span
+                  style="
+                    margin: 0 15px;
+                    font-size: 1rem;
+                    min-width: 20px;
+                    text-align: center;
+                  "
+                  >{{ item.quantity }}</span
+                >
+                <button
+                  type="submit"
+                  name="action"
+                  value="increase"
+                  style="
+                    background: #f5f5f5;
+                    border: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    font-size: 1rem;
+                    cursor: pointer;
+                  "
+                >
+                  +
+                </button>
+              </form>
+
+              <!-- Remove Item -->
+              <form
+                action="{% url 'add_to_cart' item.product.id %}"
+                method="post"
+                style="margin-left: 15px"
+              >
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  name="action"
+                  value="remove"
+                  style="
+                    background: none;
+                    border: none;
+                    color: #ff4757;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                  "
+                >
+                  Remove
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Subtotal -->
+          <div style="text-align: right">
+            <p style="font-weight: bold; font-size: 1.1rem; margin: 0">
+              ${{ item.subtotal }}
+            </p>
+          </div>
         </div>
-        <!-- Add more thumbnails if you have additional product images -->
-      </div>
-    </div>
-
-    <!-- Product Info Section -->
-    <div class="product-info-section">
-      <h1 class="product-title">{{ product.product_name }}</h1>
-
-      <div class="price-section">
-        {% if product.discounted_price %}
-        <span class="original-price">₹{{ product.selling_price }}</span>
-        <span class="discounted-price">₹{{ product.discounted_price }}</span>
-        <span class="discount-percentage">
-          ({{ product.get_discount_percentage }}% OFF)
-        </span>
-        {% else %}
-        <span class="current-price">₹{{ product.selling_price }}</span>
-        {% endif %}
-      </div>
-
-      <div class="product-meta">
-        <div class="rating">
-          <span class="stars">★★★★★</span>
-          <span class="review-count">(42 reviews)</span>
-        </div>
-        <div class="availability in-stock">
-          In Stock ({{ product.stock_quantity }} available)
-        </div>
-      </div>
-
-      <div class="product-description">
-        <h3>Description</h3>
-        <p>{{ product.description }}</p>
-      </div>
-
-      <!-- Add to Cart Form -->
-      <form method="post" action="" class="add-to-cart-form">
-        {% csrf_token %}
-        <div class="quantity-selector">
-          <button
-            type="button"
-            class="quantity-btn minus"
-            onclick="decreaseQuantity()"
-          >
-            -
-          </button>
-          <input
-            type="number"
-            name="quantity"
-            value="1"
-            min="1"
-            max="{{ product.stock_quantity }}"
-            id="quantity-input"
+        {% endfor %} {% else %}
+        <div style="text-align: center; padding: 40px 0">
+          <img
+            src="{% static 'images/empty-cart.png' %}"
+            alt="Empty Cart"
+            style="width: 150px; opacity: 0.7; margin-bottom: 20px"
           />
-          <button
-            type="button"
-            class="quantity-btn plus"
-            onclick="increaseQuantity()"
+          <h3 style="color: #666; margin-bottom: 15px">Your cart is empty</h3>
+          <a
+            href="{% url 'shop_now_page' %}"
+            style="
+              display: inline-block;
+              padding: 10px 25px;
+              background: linear-gradient(135deg, #6e8efb, #a777e3);
+              color: white;
+              border-radius: 50px;
+              text-decoration: none;
+            "
+            >Continue Shopping</a
           >
-            +
-          </button>
         </div>
-
-        <div class="action-buttons">
-          <button type="submit" class="add-to-cart-btn">
-            <i class="fas fa-shopping-cart"></i> ADD TO CART
-          </button>
-          <button
-            type="button"
-            class="wishlist-btn"
-            onclick="addToWishlist({{ product.id }})"
-          >
-            <i class="fas fa-heart"></i> WISHLIST
-          </button>
-        </div>
-      </form>
-
-      <div class="product-tags">
-        <span>Category: {{ product.category.category_name }}</span>
-        {% if product.tags %}
-        <span>Tags: {{ product.tags }}</span>
         {% endif %}
       </div>
 
-      <div class="social-share">
-        <span>Share:</span>
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-pinterest"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Product Tabs Section -->
-  <div class="product-tabs">
-    <ul class="tabs-header">
-      <li class="active" data-tab="description">Description</li>
-      <li data-tab="reviews">Reviews</li>
-      <li data-tab="shipping">Shipping & Returns</li>
-    </ul>
-
-    <div class="tabs-content">
-      <div class="tab-pane active" id="description">
-        <h3>Product Details</h3>
-        <p>
-          {{ product.detailed_description|default:"No additional details
-          available." }}
-        </p>
-      </div>
-
-      <div class="tab-pane" id="reviews">
-        <h3>Customer Reviews</h3>
-        <p>No reviews yet. Be the first to review this product!</p>
-      </div>
-
-      <div class="tab-pane" id="shipping">
-        <h3>Shipping Information</h3>
-        <p>
-          Free shipping on all orders over ₹500. Delivery within 3-5 business
-          days.
-        </p>
-        <h3>Return Policy</h3>
-        <p>30-day easy returns. Money back guarantee.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Related Products -->
-  <div class="related-products">
-    <h2>You May Also Like</h2>
-    <div class="related-products-grid">
-      <!-- You can loop through related products here -->
-      <div class="related-product-card">
-        <img
-          src="{% static 'images/placeholder-product.jpg' %}"
-          alt="Related Product"
-        />
-        <h3>Related Product 1</h3>
-        <span class="price">₹999</span>
-        <button>Add to Cart</button>
-      </div>
-      <!-- Add more related products -->
-    </div>
-  </div>
-</div>
-
-<!-- Success Modal -->
-<div class="modal" id="addToCartModal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div class="modal-body">
-      <i class="fas fa-check-circle success-icon"></i>
-      <h3>Item Added to Your Cart!</h3>
-      <p>{{ product.product_name }} has been added to your shopping cart.</p>
-      <div class="modal-actions">
-        <a href="{% url 'shop_now_page' %}" class="continue-shopping"
-          >Continue Shopping</a
+      {% if cart_items %}
+      <!-- Continue Shopping & Update Cart -->
+      <div
+        style="display: flex; justify-content: space-between; margin-top: 30px"
+      >
+        <a
+          href="{% url 'shop_now_page' %}"
+          style="
+            padding: 12px 25px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+          "
         >
-        <a href="{% url 'view_cart' %}" class="view-cart">View Cart</a>
+          ← Continue Shopping
+        </a>
+        <a
+          href="#"
+          style="
+            padding: 12px 25px;
+            background: #f5f5f5;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+          "
+        >
+          Update Cart
+        </a>
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
 
 <style>
-  /* Main Container */
-  .product-detail-container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
+  /* Hover Effects */
+  .cart-item:hover {
+    background: #fafafa;
   }
 
-  /* Product Card */
-  .product-detail-card {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-bottom: 50px;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Image Section */
-  .product-image-section {
-    flex: 1;
-    min-width: 300px;
-  }
-
-  .main-image {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .main-image img {
-    max-width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 8px;
-  }
-
-  .thumbnail-gallery {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .thumbnail {
-    width: 60px;
-    height: 60px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    overflow: hidden;
-  }
-
-  .thumbnail.active {
-    border-color: #4caf50;
-  }
-
-  .thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Product Info Section */
-  .product-info-section {
-    flex: 1;
-    min-width: 300px;
-  }
-
-  .product-title {
-    font-size: 28px;
-    margin-bottom: 15px;
-    color: #333;
-  }
-
-  /* Price Section */
-  .price-section {
-    margin: 20px 0;
-  }
-
-  .original-price {
-    text-decoration: line-through;
-    color: #999;
-    margin-right: 10px;
-  }
-
-  .discounted-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #e53935;
-  }
-
-  .current-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4caf50;
-  }
-
-  .discount-percentage {
-    background: #e53935;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 14px;
-    margin-left: 10px;
-  }
-
-  /* Product Meta */
-  .product-meta {
-    margin: 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .rating .stars {
-    color: #ffd700;
-  }
-
-  .review-count {
-    color: #666;
-    font-size: 14px;
-  }
-
-  .availability {
-    font-weight: bold;
-  }
-
-  .in-stock {
-    color: #4caf50;
-  }
-
-  .out-of-stock {
-    color: #e53935;
-  }
-
-  /* Quantity Selector */
-  .quantity-selector {
-    display: flex;
-    align-items: center;
-    margin: 25px 0;
-  }
-
-  .quantity-btn {
-    width: 40px;
-    height: 40px;
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .quantity-btn:hover {
-    background: #e0e0e0;
-  }
-
-  #quantity-input {
-    width: 60px;
-    height: 40px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-right: none;
-    -moz-appearance: textfield;
-  }
-
-  #quantity-input::-webkit-outer-spin-button,
-  #quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Action Buttons */
-  .action-buttons {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-  }
-
-  .add-to-cart-btn,
-  .wishlist-btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-  }
-
-  .add-to-cart-btn {
-    background: #4caf50;
-    color: white;
-  }
-
-  .add-to-cart-btn:hover {
-    background: #388e3c;
+  a:hover {
+    opacity: 0.9;
     transform: translateY(-2px);
   }
 
-  .wishlist-btn {
-    background: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
+  button:hover {
+    opacity: 0.9;
   }
 
-  .wishlist-btn:hover {
-    background: #e0e0e0;
-    transform: translateY(-2px);
-  }
-
-  /* Product Tabs */
-  .product-tabs {
-    margin: 50px 0;
-  }
-
-  .tabs-header {
-    display: flex;
-    border-bottom: 1px solid #ddd;
-    padding: 0;
-    list-style: none;
-  }
-
-  .tabs-header li {
-    padding: 15px 25px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #666;
-    position: relative;
-  }
-
-  .tabs-header li.active {
-    color: #4caf50;
-  }
-
-  .tabs-header li.active::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #4caf50;
-  }
-
-  .tab-pane {
-    display: none;
-    padding: 20px 0;
-  }
-
-  .tab-pane.active {
-    display: block;
-  }
-
-  /* Related Products */
-  .related-products h2 {
-    text-align: center;
-    margin: 40px 0 30px;
-    color: #333;
-  }
-
-  .related-products-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-
-  .related-product-card {
-    width: 200px;
-    padding: 15px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  .related-product-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
-
-  .related-product-card h3 {
-    font-size: 16px;
-    margin: 10px 0;
-  }
-
-  .related-product-card .price {
-    font-weight: bold;
-    color: #4caf50;
-    display: block;
-    margin: 10px 0;
-  }
-
-  .related-product-card button {
-    background: #4caf50;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  /* Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 400px;
-    position: relative;
-    text-align: center;
-  }
-
-  .close-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  .success-icon {
-    font-size: 60px;
-    color: #4caf50;
-    margin-bottom: 20px;
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-  }
-
-  .continue-shopping,
-  .view-cart {
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .continue-shopping {
-    background: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
-  }
-
-  .view-cart {
-    background: #4caf50;
-    color: white;
-  }
-
-  /* Responsive */
+  /* Responsive adjustments */
   @media (max-width: 768px) {
-    .product-detail-card {
+    .cart-container {
       flex-direction: column;
     }
 
-    .action-buttons {
+    .order-summary {
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .cart-item {
       flex-direction: column;
     }
 
-    .add-to-cart-btn,
-    .wishlist-btn {
-      justify-content: center;
+    .cart-item img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
     }
   }
 </style>
 
-<script>
-  // Change main product image when thumbnail is clicked
-  function changeImage(element, imageUrl) {
-    document.getElementById("main-product-image").src = imageUrl;
-
-    // Update active thumbnail
-    document.querySelectorAll(".thumbnail").forEach((thumb) => {
-      thumb.classList.remove("active");
-    });
-    element.classList.add("active");
-  }
-
-  // Quantity controls
-  function increaseQuantity() {
-    const input = document.getElementById("quantity-input");
-    const max = parseInt(input.max);
-    if (parseInt(input.value) < max) {
-      input.value = parseInt(input.value) + 1;
-    }
-  }
-
-  function decreaseQuantity() {
-    const input = document.getElementById("quantity-input");
-    if (parseInt(input.value) > 1) {
-      input.value = parseInt(input.value) - 1;
-    }
-  }
-
-  // Tab switching
-  document.querySelectorAll(".tabs-header li").forEach((tab) => {
-    tab.addEventListener("click", function () {
-      const tabId = this.getAttribute("data-tab");
-
-      // Update active tab
-      document.querySelectorAll(".tabs-header li").forEach((t) => {
-        t.classList.remove("active");
-      });
-      this.classList.add("active");
-
-      // Update active tab content
-      document.querySelectorAll(".tab-pane").forEach((pane) => {
-        pane.classList.remove("active");
-      });
-      document.getElementById(tabId).classList.add("active");
-    });
-  });
-
-  // Add to cart form submission
-  document
-    .querySelector(".add-to-cart-form")
-    ?.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // Here you would typically make an AJAX request to add to cart
-      // For this example, we'll just show the modal
-      document.getElementById("addToCartModal").style.display = "block";
-
-      // You can submit the form after showing the modal if needed
-      // this.submit();
-    });
-
-  // Close modal
-  document
-    .querySelector(".close-modal")
-    ?.addEventListener("click", function () {
-      document.getElementById("addToCartModal").style.display = "none";
-    });
-
-  // Close modal when clicking outside
-  window.addEventListener("click", function (event) {
-    if (event.target === document.getElementById("addToCartModal")) {
-      document.getElementById("addToCartModal").style.display = "none";
-    }
-  });
-
-  // Add to wishlist function
-  function addToWishlist(productId) {
-    // This would typically be an AJAX call to your server
-    alert("Added product " + productId + " to your wishlist!");
-  }
-</script>
 {% endblock %}
