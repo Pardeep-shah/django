@@ -1,24 +1,358 @@
+{% extends "base.html" %} {% load static %} {% block content %} {% comment %}
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Privacy Policy</title>
-</head>
-<body>
-    <h1>Privacy Policy</h1>
-    <p>Your privacy is important to us. This privacy policy explains what data we collect, how we use it, and how we protect your information.</p>
-    
-    <h3>Information Collection</h3>
-    <p>We may collect personal information such as your name, email address, and usage data.</p>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - [Your E-commerce Name]</title>
+    {% endcomment %}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
 
-    <h3>Use of Information</h3>
-    <p>We use your data to provide and improve our services, communicate with you, and ensure security.</p>
+      body {
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9;
+      }
 
-    <h3>Data Protection</h3>
-    <p>We implement appropriate security measures to protect your personal data.</p>
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
 
-    <h3>Changes to Policy</h3>
-    <p>This policy may be updated from time to time. Please review it periodically.</p>
+      header {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px 0;
+      }
 
-    <p>Contact us if you have any questions about our privacy practices.</p>
-</body>
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 30px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .privacy-hero {
+        background-color: #2c3e50;
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+      }
+
+      .privacy-hero h1 {
+        font-size: 42px;
+        margin-bottom: 20px;
+      }
+
+      .privacy-content {
+        background-color: white;
+        padding: 60px 0;
+      }
+
+      .privacy-section {
+        margin-bottom: 40px;
+      }
+
+      h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      h3 {
+        font-size: 24px;
+        margin: 30px 0 15px;
+        color: #3498db;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      ul {
+        margin-bottom: 15px;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .effective-date {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .contact-info {
+        background-color: #f1f5f9;
+        padding: 30px;
+        border-radius: 8px;
+        margin-top: 40px;
+      }
+
+      footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 40px 0;
+        text-align: center;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      .footer-links a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+
+      @media (max-width: 768px) {
+        .privacy-hero h1 {
+          font-size: 32px;
+        }
+
+        h2 {
+          font-size: 28px;
+        }
+
+        h3 {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="privacy-hero">
+      <div class="container">
+        <h1>Privacy Policy</h1>
+        <p>Your privacy is important to us</p>
+      </div>
+    </section>
+
+    <section class="privacy-content">
+      <div class="container">
+        <div class="effective-date">Last Updated: [Month Day, Year]</div>
+
+        <div class="privacy-section">
+          <h2>Introduction</h2>
+          <p>
+            Welcome to ShopEase ("we," "our," or "us"). We are committed to
+            protecting your privacy and ensuring the security of your personal
+            information. This Privacy Policy explains how we collect, use,
+            disclose, and safeguard your information when you visit our website
+            [website URL] or make a purchase from us.
+          </p>
+          <p>
+            By accessing or using our Service, you agree to the collection and
+            use of information in accordance with this policy.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Information We Collect</h2>
+
+          <h3>Personal Information</h3>
+          <p>
+            When you make a purchase or attempt to make a purchase through our
+            Site, we collect certain information from you, including:
+          </p>
+          <ul>
+            <li>Your name</li>
+            <li>Billing and shipping addresses</li>
+            <li>Payment information (credit card numbers, etc.)</li>
+            <li>Email address</li>
+            <li>Phone number</li>
+          </ul>
+
+          <h3>Automatically Collected Information</h3>
+          <p>
+            When you visit our Site, we automatically collect certain
+            information about your device, including:
+          </p>
+          <ul>
+            <li>
+              Information about your web browser, IP address, time zone, and
+              some of the cookies installed on your device
+            </li>
+            <li>
+              Information about the individual web pages or products you view,
+              what websites or search terms referred you to the Site, and how
+              you interact with the Site
+            </li>
+          </ul>
+
+          <h3>Cookies and Tracking Technologies</h3>
+          <p>
+            We use cookies and similar tracking technologies to track activity
+            on our Site and hold certain information to improve your browsing
+            experience. You can instruct your browser to refuse all cookies or
+            indicate when a cookie is being sent.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>How We Use Your Information</h2>
+          <p>
+            We use the information we collect in various ways, including to:
+          </p>
+          <ul>
+            <li>Process and fulfill your orders</li>
+            <li>
+              Communicate with you about your orders, account, or customer
+              service needs
+            </li>
+            <li>Screen our orders for potential risk or fraud</li>
+            <li>
+              Provide you with information or advertising relating to our
+              products or services (with your consent where required)
+            </li>
+            <li>
+              Improve and optimize our Site (e.g., by generating analytics about
+              how our customers browse and interact with the Site)
+            </li>
+            <li>Identify potential new customers</li>
+            <li>Comply with legal obligations</li>
+          </ul>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Sharing Your Information</h2>
+          <p>
+            We share your personal information with third parties to help us use
+            your information, as described above. For example:
+          </p>
+          <ul>
+            <li>
+              We use Shopify to power our online store—you can read more about
+              how Shopify uses your personal information here: [link to
+              Shopify's privacy policy]
+            </li>
+            <li>
+              We use Google Analytics to help us understand how our customers
+              use the Site—you can read more about how Google uses your personal
+              information here: [link to Google's privacy policy]
+            </li>
+            <li>
+              We may share your information to comply with applicable laws and
+              regulations, to respond to a subpoena, search warrant or other
+              lawful request for information we receive, or to otherwise protect
+              our rights
+            </li>
+          </ul>
+          <p>We do not sell your personal information to third parties.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Data Retention</h2>
+          <p>
+            We will retain your personal information only for as long as is
+            necessary for the purposes set out in this Privacy Policy. We will
+            retain and use your information to the extent necessary to comply
+            with our legal obligations, resolve disputes, and enforce our
+            policies.
+          </p>
+          <p>
+            When you place an order through the Site, we will maintain your
+            Order Information for our records unless and until you ask us to
+            delete this information.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Your Rights</h2>
+          <p>
+            If you are a European resident, you have the right to access
+            personal information we hold about you and to ask that your personal
+            information be corrected, updated, or deleted. If you would like to
+            exercise this right, please contact us through the contact
+            information below.
+          </p>
+          <p>
+            Additionally, if you are a European resident we note that we are
+            processing your information in order to fulfill contracts we might
+            have with you (for example if you make an order through the Site),
+            or otherwise to pursue our legitimate business interests listed
+            above.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Security</h2>
+          <p>
+            We implement appropriate technical and organizational measures to
+            protect the security of your personal information. However, please
+            remember that no method of transmission over the Internet or method
+            of electronic storage is 100% secure.
+          </p>
+          <p>
+            All payment transactions are processed through a PCI-DSS compliant
+            payment gateway and your payment information is encrypted using SSL
+            technology.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Changes to This Policy</h2>
+          <p>
+            We may update this privacy policy from time to time in order to
+            reflect changes to our practices or for other operational, legal or
+            regulatory reasons. We will notify you of any changes by posting the
+            new Privacy Policy on this page and updating the "Last Updated"
+            date.
+          </p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Contact Us</h2>
+          <p>
+            For more information about our privacy practices, if you have
+            questions, or if you would like to make a complaint, please contact
+            us by e-mail at privacy@shopease.com or by mail using the details
+            provided below:
+          </p>
+
+          <div class="contact-info">
+            <p><strong>ShopEase Privacy Officer</strong></p>
+            <p>[Your Company Address]</p>
+            <p>[City, State ZIP Code]</p>
+            <p>[Country]</p>
+            <p>Email: privacy@shopease.com</p>
+            <p>Phone: [Your Customer Service Number]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
+{% endblock%}

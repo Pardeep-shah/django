@@ -1,10 +1,4 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+
   <body>
     {% include "partial/navbar.html" %} {% block content %} {% comment %} Page
     Content {% endcomment %} {% endblock %}
@@ -64,37 +58,44 @@
             <ul style="list-style: none; padding: 0; line-height: 2">
               <li>
                 <a
-                  href="#"
+                  href="{% url 'home_page' %}"
                   style="color: white; text-decoration: none; transition: 0.3s"
                   >&rarr; Home</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="{% url 'about_us_page' %}"
                   style="color: white; text-decoration: none; transition: 0.3s"
                   >&rarr; About Us</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="{% url 'contact_us_page' %}"
                   style="color: white; text-decoration: none; transition: 0.3s"
-                  >&rarr; Services</a
+                  >&rarr; contact us</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="{% url 'our_mission_page' %}"
                   style="color: white; text-decoration: none; transition: 0.3s"
-                  >&rarr; Portfolio</a
+                  >&rarr; our mission</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="{% url 'our_vision_page' %}"
                   style="color: white; text-decoration: none; transition: 0.3s"
-                  >&rarr; Contact</a
+                  >&rarr; our vision</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'privacy_policy_page' %}"
+                  style="color: white; text-decoration: none; transition: 0.3s"
+                  >&rarr; Privacy Policy</a
                 >
               </li>
             </ul>

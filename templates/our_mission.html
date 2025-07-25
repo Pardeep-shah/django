@@ -1,20 +1,310 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Our Mission</title>
-</head>
-<body>
-    <h1>Our Mission</h1>
-    <p>Our mission is to deliver innovative, reliable, and user-focused solutions that drive progress and make a positive impact on the world.</p>
+{% extends "base.html" %} {% load static %} {% block content %}
 
-    <p>We are committed to:</p>
-    <ul>
-        <li>Providing high-quality products and services</li>
-        <li>Empowering our customers through technology</li>
-        <li>Promoting ethical practices and sustainability</li>
-        <li>Fostering a culture of growth, learning, and collaboration</li>
-    </ul>
 
-    <p>Together, we aim to create a better, smarter, and more connected future.</p>
-</body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px 0;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 30px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .mission-hero {
+        background-color: #3498db;
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .mission-hero h1 {
+        font-size: 42px;
+        margin-bottom: 20px;
+      }
+
+      .mission-content {
+        padding: 60px 0;
+        background-color: white;
+      }
+
+      .mission-card {
+        display: flex;
+        margin-bottom: 40px;
+        align-items: center;
+      }
+
+      .mission-card.reverse {
+        flex-direction: row-reverse;
+      }
+
+      .mission-text {
+        flex: 1;
+        padding: 0 40px;
+      }
+
+      .mission-image {
+        flex: 1;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .mission-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #3498db;
+      }
+
+      p {
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
+      .values-section {
+        background-color: #f1f5f9;
+        padding: 60px 0;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .value-card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .value-card h4 {
+        font-size: 20px;
+        color: #3498db;
+        margin-bottom: 15px;
+      }
+
+      footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 40px 0;
+        text-align: center;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      .footer-links a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+
+      @media (max-width: 768px) {
+        .mission-card,
+        .mission-card.reverse {
+          flex-direction: column;
+        }
+
+        .mission-text,
+        .mission-image {
+          padding: 20px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% comment %} <header>
+      <div class="container header-container">
+        <div class="logo">ShopEase</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="our_mission.html">Our Mission</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header> {% endcomment %}
+
+    <section class="mission-hero">
+      <div class="container">
+        <h1>Our Mission</h1>
+        <p>
+          Delivering exceptional value while making online shopping effortless
+          and enjoyable
+        </p>
+      </div>
+    </section>
+
+    <section class="mission-content">
+      <div class="container">
+        <div class="mission-card">
+          <div class="mission-text">
+            <h2>Who We Are</h2>
+            <p>
+              Founded in 2020, ShopEase began with a simple idea: to create an
+              e-commerce platform that puts customers first. We're a team of
+              passionate individuals who believe shopping online should be easy,
+              secure, and delightful.
+            </p>
+            <p>
+              From our humble beginnings as a small startup, we've grown into a
+              trusted marketplace serving millions of customers worldwide,
+              without ever losing sight of our core values.
+            </p>
+          </div>
+          <div class="mission-image">
+            <img
+              src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+              alt="Our team working together"
+            />
+          </div>
+        </div>
+
+        <div class="mission-card reverse">
+          <div class="mission-text">
+            <h2>What We Believe</h2>
+            <p>
+              At ShopEase, we believe that e-commerce should be about more than
+              just transactions. We're building relationships and creating
+              experiences that keep customers coming back.
+            </p>
+            <p>
+              We're committed to sustainability, ethical sourcing, and giving
+              back to the communities we serve. Every purchase you make
+              contributes to these efforts.
+            </p>
+          </div>
+          <div class="mission-image">
+            <img
+              src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+              alt="Hands holding sustainable products"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="values-section">
+      <div class="container">
+        <h2>Our Core Values</h2>
+        <p>These principles guide everything we do at ShopEase</p>
+
+        <div class="values-grid">
+          <div class="value-card">
+            <h4>Customer First</h4>
+            <p>
+              We listen to our customers and continuously improve based on their
+              feedback. Your satisfaction is our top priority.
+            </p>
+          </div>
+
+          <div class="value-card">
+            <h4>Quality Assurance</h4>
+            <p>
+              Every product in our marketplace undergoes rigorous quality checks
+              to ensure you receive only the best.
+            </p>
+          </div>
+
+          <div class="value-card">
+            <h4>Transparency</h4>
+            <p>
+              No hidden fees, no fine print. We believe in clear pricing and
+              honest business practices.
+            </p>
+          </div>
+
+          <div class="value-card">
+            <h4>Innovation</h4>
+            <p>
+              We're constantly evolving our platform to provide you with the
+              most seamless shopping experience possible.
+            </p>
+          </div>
+
+          <div class="value-card">
+            <h4>Sustainability</h4>
+            <p>
+              We're committed to reducing our environmental impact through
+              eco-friendly packaging and carbon-neutral shipping.
+            </p>
+          </div>
+
+          <div class="value-card">
+            <h4>Community</h4>
+            <p>
+              We support local businesses and artisans by giving them a platform
+              to reach customers worldwide.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+  </body>
 </html>
+
+{% endblock%}
