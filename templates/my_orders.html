@@ -1,279 +1,76 @@
-{% extends "base.html" %} {% load static %} {% comment %} {% block title %}My
-Orders{% endblock %} {% endcomment %} {% block content %}
-<div class="orders-wrapper">
-  <div class="orders-header">
-    <h1><i class="fas fa-clipboard-list"></i> My Orders</h1>
-    <p>Track and manage all your purchases in one place</p>
-  </div>
+{% extends "base.html" %} {% load static %} {% block title %}My Orders{%
+endblock %} {% block content %}
+<div class="order-container">
+  <h2>My Orders</h2>
 
   {% if orders %}
-  <div class="orders-grid">
-    {% for order in orders %}
-    <div
-      class="order-card {% if order.status == 'Delivered' %}delivered{% elif order.status == 'Cancelled' %}cancelled{% else %}processing{% endif %}"
-    >
-      <div class="order-header">
-        <span class="order-id">Order #{{ order.id }}</span>
-        <span class="order-status">{{ order.status }}</span>
-      </div>
-      <div class="order-details">
-        <div class="detail-row">
-          <span><i class="far fa-calendar-alt"></i> Date:</span>
-          <span>{{ order.created_at|date:"d M Y" }}</span>
-        </div>
-        <div class="detail-row">
-          <span><i class="fas fa-user"></i> Customer:</span>
-          <span>{{ order.full_name }}</span>
-        </div>
-        <div class="detail-row">
-          <span><i class="fas fa-rupee-sign"></i> Total:</span>
-          <span class="order-total">₹{{ order.total_amount }}</span>
-        </div>
-      </div>
-      <div class="order-actions">
-        <a href="#" class="btn-view">
-          <i class="fas fa-eye"></i> View Details
-        </a>
-        {% if order.status != 'Cancelled' %}
-        <a href="#" class="btn-track">
-          <i class="fas fa-truck"></i> Track Order
-        </a>
-        {% endif %}
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+  <table class="order-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Customer Name</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.created_at|date:"d M Y" }}</td>
+        <td>{{ order.full_name }}</td>
+        <td>{{ order.status }}</td>
+        <td>₹{{ order.total_amount }}</td>
+        <td>
+          <a href="" class="btn-view">View</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% else %}
-  <div class="no-orders">
-    <img
-      src="{% static 'images/empty-orders.png' %}"
-      alt="No orders"
-      class="empty-img"
-    />
-    <h3>No Orders Yet</h3>
-    <p>You haven't placed any orders with us yet. Start shopping now!</p>
-    <a href="{% url 'shop_now_page' %}" class="btn-shop">Shop Now</a>
-  </div>
+  <p>You have not placed any orders yet.</p>
   {% endif %}
 </div>
-{% endblock %} {% block extra_css %}
+{% endblock %}
+
 <style>
-  .orders-wrapper {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  .order-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
-  .orders-header {
+  .order-container h2 {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
-  .orders-header h1 {
-    color: #2c3e50;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
   }
 
-  .orders-header h1 i {
-    margin-right: 15px;
-    color: #3498db;
-  }
-
-  .orders-header p {
-    color: #7f8c8d;
-    font-size: 1.1rem;
-  }
-
-  .orders-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 25px;
-  }
-
-  .order-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid #3498db;
-  }
-
-  .order-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  }
-
-  .order-card.delivered {
-    border-left-color: #2ecc71;
-  }
-
-  .order-card.cancelled {
-    border-left-color: #e74c3c;
-  }
-
-  .order-card.processing {
-    border-left-color: #f39c12;
-  }
-
-  .order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ecf0f1;
-  }
-
-  .order-id {
-    font-weight: bold;
-    color: #2c3e50;
-  }
-
-  .order-status {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  .delivered .order-status {
-    background-color: #d5f5e3;
-    color: #27ae60;
-  }
-
-  .cancelled .order-status {
-    background-color: #fadbd8;
-    color: #e74c3c;
-  }
-
-  .processing .order-status {
-    background-color: #fdebd0;
-    color: #f39c12;
-  }
-
-  .order-details {
-    margin-bottom: 20px;
-  }
-
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .detail-row span:first-child {
-    color: #7f8c8d;
-  }
-
-  .detail-row i {
-    margin-right: 8px;
-    width: 16px;
+  .order-table th,
+  .order-table td {
+    padding: 12px 15px;
     text-align: center;
-  }
-
-  .order-total {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #2c3e50;
-  }
-
-  .order-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .btn-view,
-  .btn-track,
-  .btn-shop {
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
+    border-bottom: 1px solid #ddd;
   }
 
   .btn-view {
-    background-color: #3498db;
-    color: white;
+    background: #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
   }
 
   .btn-view:hover {
-    background-color: #2980b9;
-  }
-
-  .btn-track {
-    background-color: #f1f1f1;
-    color: #2c3e50;
-  }
-
-  .btn-track:hover {
-    background-color: #e0e0e0;
-  }
-
-  .btn-view i,
-  .btn-track i {
-    margin-right: 5px;
-  }
-
-  .no-orders {
-    text-align: center;
-    padding: 40px 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  }
-
-  .empty-img {
-    max-width: 200px;
-    margin-bottom: 20px;
-    opacity: 0.8;
-  }
-
-  .no-orders h3 {
-    color: #2c3e50;
-    margin-bottom: 10px;
-  }
-
-  .no-orders p {
-    color: #7f8c8d;
-    margin-bottom: 20px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .btn-shop {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 25px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-shop:hover {
-    background-color: #2980b9;
-  }
-
-  @media (max-width: 768px) {
-    .orders-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .orders-header h1 {
-      font-size: 2rem;
-    }
+    background: #0056b3;
   }
 </style>
+
 {% endblock %}
