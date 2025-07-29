@@ -1,55 +1,327 @@
 <!-- templates/checkout.html -->
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Checkout{% endblock%}
-{% block content %}
-<h2>Checkout</h2>
+{% extends "base.html" %} {% load static %} {% comment %} {% block title
+%}Checkout{%endblock%} {% endcomment %} {% block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Order Summary Section -->
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="my-0 fw-normal">Order Summary</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-group mb-3">
+            {% for item in cart_items %}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">{{ item.product.product_name }}</h6>
+                <small class="text-muted">Qty: {{ item.quantity }}</small>
+              </div>
+              <span class="text-muted">₹{{ item.get_subtotal }}</span>
+            </li>
+            {% endfor %}
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>EXAMPLECODE</small>
+              </div>
+              <span class="text-success">−₹0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (INR)</span>
+              <strong>₹{{ total }}</strong>
+            </li>
+          </ul>
 
-  <form method="POST" action="{% url 'place_order' %}">
-    {% csrf_token %}
-    <label>Full Name:</label>
-    <input type="text" name="full_name" required /><br />
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Promo code" />
+            <button type="button" class="btn btn-secondary">Redeem</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <label>Email:</label>
-    <input type="email" name="email" required /><br />
+    <!-- Checkout Form Section -->
+    <div class="col-md-7 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="my-0 fw-normal">Checkout Details</h4>
+        </div>
+        <div class="card-body">
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
 
-    <label>Phone:</label>
-    <input type="text" name="phone" required /><br />
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="full_name" class="form-label">Full name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="full_name"
+                  name="full_name"
+                  placeholder=""
+                  value=""
+                  required
+                />
+                <div class="invalid-feedback">Valid full name is required.</div>
+              </div>
 
-    <label>Address:</label>
-    <textarea name="address" required></textarea><br />
+              <div class="col-sm-6">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
+              </div>
 
-    <label>City:</label>
-    <input type="text" name="city" required /><br />
+              <div class="col-12">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  placeholder="+91 9876543210"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please enter your phone number.
+                </div>
+              </div>
 
-    <label>State:</label>
-    <input type="text" name="state" required /><br />
+              <div class="col-12">
+                <label for="address" class="form-label">Address</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="1234 Main St"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">
+                  Please enter your shipping address.
+                </div>
+              </div>
 
-    <label>Postal Code:</label>
-    <input type="text" name="pincode" required /><br />
+              <div class="col-md-4">
+                <label for="city" class="form-label">City</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  name="city"
+                  required
+                />
+                <div class="invalid-feedback">Please provide a valid city.</div>
+              </div>
 
-    <label>Country:</label>
-    <input type="text" name="country" value="India" required /><br />
+              <div class="col-md-4">
+                <label for="state" class="form-label">State</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="state"
+                  name="state"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please provide a valid state.
+                </div>
+              </div>
 
-    <label>Payment Method:</label>
-    <select name="payment_method">
-      <option value="COD">Cash on Delivery</option>
-      <option value="UPI">UPI</option>
-      <option value="Card">Credit/Debit Card</option>
-    </select>
+              <div class="col-md-4">
+                <label for="postal_code" class="form-label">Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postal_code"
+                  name="postal_code"
+                  required
+                />
+                <div class="invalid-feedback">Postal code required.</div>
+              </div>
 
-    <h3>Order Summary</h3>
-    <ul>
-      {% for item in cart_items %}
-      <li>
-        {{ item.product.product_name }} - {{ item.quantity }} x ₹{{
-        item.product.selling_price }} = ₹{{ item.get_subtotal }}
-      </li>
-      {% endfor %}
-    </ul>
-    <p><strong>Total:</strong> ₹{{ grand_total }}</p>
+              <div class="col-12">
+                <label for="country" class="form-label">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  name="country"
+                  value="India"
+                  readonly
+                />
+              </div>
+            </div>
 
-    <button type="submit">Place Order</button>
-  </form>
-  {% endblock %}
-</form>
+            <hr class="my-4" />
+
+            <h4 class="mb-3">Payment</h4>
+
+            <div class="my-3">
+              <div class="form-check">
+                <input
+                  id="cod"
+                  name="payment_method"
+                  type="radio"
+                  class="form-check-input"
+                  value="COD"
+                  checked
+                  required
+                />
+                <label class="form-check-label" for="cod"
+                  >Cash on Delivery (COD)</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  id="online"
+                  name="payment_method"
+                  type="radio"
+                  class="form-check-input"
+                  value="Online"
+                  required
+                />
+                <label class="form-check-label" for="online"
+                  >Online Payment</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row gy-3"
+              id="online-payment-details"
+              style="display: none"
+            >
+              <div class="col-md-6">
+                <label for="cc-name" class="form-label">Name on card</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-name"
+                  placeholder=""
+                />
+                <small class="text-muted">Full name as displayed on card</small>
+                <div class="invalid-feedback">Name on card is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-number" class="form-label"
+                  >Credit card number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-number"
+                  placeholder=""
+                />
+                <div class="invalid-feedback">
+                  Credit card number is required
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label for="cc-expiration" class="form-label">Expiration</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-expiration"
+                  placeholder=""
+                />
+                <div class="invalid-feedback">Expiration date required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label for="cc-cvv" class="form-label">CVV</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-cvv"
+                  placeholder=""
+                />
+                <div class="invalid-feedback">Security code required</div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <button class="w-100 btn btn-primary btn-lg" type="submit">
+              Place Order
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for payment method toggle -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const codRadio = document.getElementById("cod");
+    const onlineRadio = document.getElementById("online");
+    const onlinePaymentDetails = document.getElementById(
+      "online-payment-details"
+    );
+
+    function togglePaymentDetails() {
+      if (onlineRadio.checked) {
+        onlinePaymentDetails.style.display = "block";
+      } else {
+        onlinePaymentDetails.style.display = "none";
+      }
+    }
+
+    codRadio.addEventListener("change", togglePaymentDetails);
+    onlineRadio.addEventListener("change", togglePaymentDetails);
+
+    // Initial check
+    togglePaymentDetails();
+  });
+</script>
+
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .card {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    font-weight: 500;
+  }
+
+  .list-group-item {
+    padding: 1rem 1.25rem;
+  }
+
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+</style>
+{% endblock %}

@@ -416,3 +416,15 @@ def edit_profile(request):
         return redirect('edit_profile')
 
     return render(request, 'edit_profile.html', {'user': user, 'profile': profile})
+
+
+
+
+
+
+
+
+
+
+
+
