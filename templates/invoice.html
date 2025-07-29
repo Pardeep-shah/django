@@ -1,0 +1,62 @@
+
+
+
+{% extends "base.html" %} {% load static %} 
+
+{% block content %}
+
+
+    <style>
+      body {
+        font-family: Arial;
+        padding: 40px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Invoice</h2>
+    <p><strong>Invoice No:</strong> {{ invoice_number }}</p>
+    <p><strong>Date:</strong> {{ date }}</p>
+    <p><strong>Customer:</strong> {{ customer_name }}</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.price }}</td>
+          <td>₹{{ item.quantity|multiply:item.price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3 style="text-align: right">Grand Total: ₹{{ total }}</h3>
+  </body>
+</html>
+
+
+{% endblock content %}

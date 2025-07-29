@@ -342,11 +342,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Order
 
-@login_required
-def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    print(orders)
-    return render(request, 'my_orders.html', {'orders': orders})
+# @login_required
+# def my_orders(request):
+#     orders = Order.objects.filter(user=request.user).order_by('-created_at')
+#     print(orders)
+#     return render(request, 'my_orders.html', {'orders': orders})
 
 
 
@@ -439,6 +439,85 @@ def send_test_email(request):
 
 
 
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+import datetime
+
+# Custom filter for multiplication in template
+from django.template.defaultfilters import register
+@register.filter
+def multiply(value, arg):
+    return value * arg
+
+def show_invoice(request):
+    context = {
+        "invoice_number": "INV-1001",
+        "date": datetime.date.today(),
+        "customer_name": "John Doe",
+        "items": [
+            {"name": "Product A", "quantity": 2, "price": 100},
+            {"name": "Product B", "quantity": 1, "price": 200},
+            {"name": "Product C", "quantity": 3, "price": 50},
+        ],
+        "total": 2*100 + 1*200 + 3*50
+    }
+    return render(request, 'invoice.html', context)
+
+def send_invoice_email(request):
+    context = {
+        "invoice_number": "INV-1001",
+        "date": datetime.date.today(),
+        "customer_name": "John Doe",
+        "items": [
+            {"name": "Product A", "quantity": 2, "price": 100},
+            {"name": "Product B", "quantity": 1, "price": 200},
+            {"name": "Product C", "quantity": 3, "price": 50},
+        ],
+        "total": 2*100 + 1*200 + 3*50
+    }
+
+    html_content = render_to_string('invoice.html', context)
+    email = EmailMessage(
+        subject='Your Invoice INV-1001',
+        body=html_content,
+        from_email='pardeep88514@gmail.com',
+        to=['pardeep88514@gmail.com'],
+    )
+    email.content_subtype = 'html'
+    email.send()
+
+    return HttpResponse("Invoice sent successfully!")
 
 
 
+from django.utils import timezone
+from datetime import datetime
+from django.shortcuts import render
+from .models import Order
+
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    # Date filter
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+    
+    if from_date:
+        from_date = datetime.strptime(from_date, '%Y-%m-%d').date()
+        orders = orders.filter(created_at__date__gte=from_date)
+    
+    if to_date:
+        to_date = datetime.strptime(to_date, '%Y-%m-%d').date()
+        orders = orders.filter(created_at__date__lte=to_date)
+    
+    # Status filter
+    status = request.GET.get('status')
+    if status:
+        orders = orders.filter(status=status)
+    
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'my_orders.html', context)

@@ -5,6 +5,8 @@ from .views import *
 
 from .views import send_test_email
 
+from .views import show_invoice, send_invoice_email
+
 # path('url', fxn_name, 'route name for html file ')
 
 
@@ -78,7 +80,8 @@ urlpatterns = [
 
 
 
-
+    path('invoice/', show_invoice, name='show_invoice'),
+    path('send-invoice/', send_invoice_email, name='send_invoice'),  
 
 
 
