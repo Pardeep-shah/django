@@ -3,7 +3,7 @@ from django.urls import path,include
 # from .views import home_view
 from .views import *
 
-
+from .views import send_test_email
 
 # path('url', fxn_name, 'route name for html file ')
 
@@ -74,6 +74,7 @@ urlpatterns = [
     path('edit-profile/', edit_profile, name='edit_profile'),
 
 
+    path('send-email/', send_test_email, name='send_email'),
 
 
 

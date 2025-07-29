@@ -422,6 +422,20 @@ def edit_profile(request):
 
 
 
+# first_app/views.py
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+def send_test_email(request):
+    send_mail(
+        subject='Test Email from Django',
+        message='Hello! This is a test email sent using Gmail SMTP.',
+        from_email='pardeep88514@gmail.com',
+        recipient_list=['pardeep88514@gmail.com'],  # Or any other email
+        fail_silently=False,
+    )
+    return HttpResponse("Test email sent successfully!")
 
 
 
