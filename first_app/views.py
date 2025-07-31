@@ -521,3 +521,20 @@ def my_orders(request):
         'orders': orders,
     }
     return render(request, 'my_orders.html', context)
+
+
+
+
+
+
+
+# views.py
+from django.shortcuts import render, get_object_or_404
+from .models import Order
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_detail.html', {'order': order})
+

@@ -84,6 +84,7 @@ urlpatterns = [
     path('send-invoice/', send_invoice_email, name='send_invoice'),  
 
 
+    path('<int:order_id>/', order_detail_view, name='order_detail'),
 
 
  ]
