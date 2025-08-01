@@ -445,6 +445,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 import datetime
 
+
 # Custom filter for multiplication in template
 from django.template.defaultfilters import register
 @register.filter
@@ -538,3 +539,9 @@ def order_detail_view(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     return render(request, 'order_detail.html', {'order': order})
 
+
+
+@login_required
+def order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_detail.html', {'order': order})
